@@ -1,0 +1,10 @@
+AMMP
+sim_IPC                      1.0680 # instructions per cycle
+BZIP2
+sim_IPC                      3.4546 # instructions per cycle
+GAP
+sim_IPC                      3.3343 # instructions per cycle
+SWIM
+sim_IPC                      5.8075 # instructions per cycle
+VPR
+sim_IPC                      1.9868 # instructions per cycle
