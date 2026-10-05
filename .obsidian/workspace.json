@@ -1,0 +1,213 @@
+{
+  "main": {
+    "id": "18bde31567c4f6fe",
+    "type": "split",
+    "children": [
+      {
+        "id": "f5d7bb6176d552f6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9af13ac981710c15",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Nueva pestaña"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d0f97870dd61d50d",
+    "type": "split",
+    "children": [
+      {
+        "id": "8d07dcfa30cc909a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "08c4bd8bcaab27c2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "5fe7b23af5051910",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "3b3ddb1a09ef44c6",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "db94577736fecc0c",
+    "type": "split",
+    "children": [
+      {
+        "id": "4647be5cbffbb8db",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "706d3dbafe394690",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes"
+            }
+          },
+          {
+            "id": "249ad8c096ea6d10",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes"
+            }
+          },
+          {
+            "id": "e4ca7f77298f406d",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "33ec6886fc82a520",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "3812921b4e718488",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false
+    }
+  },
+  "active": "08c4bd8bcaab27c2",
+  "lastOpenFiles": [
+    "recursos/raquel/simplescalar_mapeo_parametros.md",
+    "recursos/raquel/tiempos primarios de una memoria RAM.md",
+    "recursos/raquel/prac1_AC_2627_1C.pdf",
+    "recursos/raquel/Intel_Core_Ultra_X937_8H.md",
+    "recursos/raquel/latencia_memoria.md",
+    "recursos/raquel/intel_default_script.md",
+    "recursos/raquel/instruction_fetch 2.md",
+    "recursos/raquel/AMD_Ryzen_9_9850HX.md",
+    "recursos/raquel/AMD_default_script.md",
+    "recursos/raquel/AC_p1_investigación.md",
+    "recursos/lucas/results intel.md",
+    "recursos/lucas/zen5_v1.sh",
+    "recursos/lucas/prac1_AC_2627_1C.pdf",
+    "recursos/lucas/results amd.md",
+    "recursos/lucas/RESULTADOS BENCHMARKS.md",
+    "recursos/lucas/intel_default.sh",
+    "recursos/lucas/Intel Core Ultra X9 378H.md",
+    "recursos/lucas/amd_zen5.sh",
+    "recursos/lucas/IndicacionsDocumentacio (1).pdf",
+    "recursos/lucas/amd_default.sh",
+    "recursos/lucas/AMD Ryzen 9 9850HX.md",
+    "recursos/raquel",
+    "recursos/lucas",
+    "recursos",
+    "Intel_Core_Ultra_X937_8H.md",
+    "AMD_Ryzen_9_9850HX.md"
+  ]
+}

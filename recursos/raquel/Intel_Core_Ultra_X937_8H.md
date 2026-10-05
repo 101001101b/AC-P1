@@ -3,7 +3,6 @@ asignatura: "[[AC]]"
 pdf: ""
 fecha: 2026-09-26
 ---
-#### 1. Els que determinen la k-via del processador. La quantitat d’instruccions per cicle que poden arribar a tractar: fetch, decode, issue i commit.
 ##### Fetch
 igual que LionCove, 48B/cicle
 ##### Decode
