@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#=====  INTEL COUGAR COVE ====
+#=======  INTEL COUGAR COVE (Core Ultra X9 378H)  ========
 
 # caches
 # nsets = mida / (bloc * assoc)
@@ -17,18 +17,18 @@ fetch=16
 decode=8
 issue=8
 commit=8
-ruu=512  		# 576
-lsq=256  		# 309 (189+120)
+ruu=512  # 576 real
+lsq=256  # 309 real (189 load + 120 store)
 
 # bus i memoria dram (LPDDR5X-9600)
-lat_fc=142  			# (<first_chunk> <inter_chunk>)(càlculs amb freqüència turbo)
-lat_ic=1
-busWidth=16 			# 128b
+lat_fc=142  # ( ) segons càlculs amb freqüència turbo
+lat_ic=2
+busWidth=16 # 128b bus = 16 Bytes
 
 # recursos funcionals
 alus_e=6    # 6 ALUs enters
 mult_e=3    # 3 multiplicadors enters
-alus_fp=4   # 4 FP (2 FADD + 2 FMA)
+alus_fp=4   # 4 canonades FP (2 FADD + 2 FMA)
 mult_fp=2   # 2 unitats FMA
 memport=3   # 3 ports dedicats de LOAD (o 4 agregats)
 

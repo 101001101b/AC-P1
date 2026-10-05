@@ -1,0 +1,103 @@
+chmod +x ~/Documents/AC-P1/scripts/zen5_v1.sh
+
+# Los 5 benchmarks
+~/Documents/AC-P1/scripts/zen5_v1.sh
+
+# Solo uno
+~/Documents/AC-P1/scripts/amd_zen5.sh vpr
+
+# Varios
+~/Documents/AC-P1/scripts/amd_zen5.sh bzip2 gap
+
+
+milax@casa:~/Documents/AC-P1$ chmod +x ~/Documents/AC-P1/scripts/zen5_v1.sh
+
+# Los 5 benchmarks
+~/Documents/AC-P1/scripts/zen5_v1.sh
+==========================================================
+ CONFIGURACIÓN DE LA SIMULACIÓN (AMD_Zen5)
+==========================================================
+--- Front-end ---
+  FETCH_IFQ   = 16    (tamaño cola de instrucciones)
+  DECODE_W    = 8     (ancho de decodificación)
+  ISSUE_W     = 8      (ancho de emisión)
+  COMMIT_W    = 8     (ancho de retirada)
+--- Buffers ---
+  RUU_SIZE    = 512     (Reorder Buffer)
+  LSQ_SIZE    = 256     (Load/Store Queue)
+--- Cachés ---
+  IL1         = il1:64:64:8:l
+  DL1         = dl1:64:64:8:l
+  UL2         = ul2:1024:64:16:l
+--- Memoria principal ---
+  MEM_LAT_FC  = 149   (latencia primer bloque)
+  MEM_LAT_IC  = 1   (latencia bloques siguientes)
+  BUS_WIDTH   = 16    (bytes)
+--- Recursos funcionales ---
+  IALU        = 6
+  IMULT       = 3
+  FPALU       = 4
+  FPMULT      = 2
+  MEMPORT     = 4
+--- Simulación ---
+  FASTFWD     = 100000000
+  MAX_INST    = 100000000
+--- Salida ---
+  RESULTS_DIR = /home/milax/Documents/AC-P1/results/AMD_Zen5
+  WORK_DIR    = /home/milax/Documents/AC-P1/specwork
+
+==========================================================
+ [ammp] Preparando simulación
+==========================================================
+  Lanzando sim-outorder...
+  [OK] ammp ha generado estadísticas.
+  [OK] Resumen guardado en /home/milax/Documents/AC-P1/results/AMD_Zen5/ammp_AMD_Zen5.out
+  [OK] CSV individual en /home/milax/Documents/AC-P1/results/AMD_Zen5/ammp_AMD_Zen5.csv
+==========================================================
+ [bzip2] Preparando simulación
+==========================================================
+  Lanzando sim-outorder...
+  [OK] bzip2 ha generado estadísticas.
+  [OK] Resumen guardado en /home/milax/Documents/AC-P1/results/AMD_Zen5/bzip2_AMD_Zen5.out
+  [OK] CSV individual en /home/milax/Documents/AC-P1/results/AMD_Zen5/bzip2_AMD_Zen5.csv
+==========================================================
+ [gap] Preparando simulación
+==========================================================
+  Lanzando sim-outorder...
+  [OK] gap ha generado estadísticas.
+  [OK] Resumen guardado en /home/milax/Documents/AC-P1/results/AMD_Zen5/gap_AMD_Zen5.out
+  [OK] CSV individual en /home/milax/Documents/AC-P1/results/AMD_Zen5/gap_AMD_Zen5.csv
+==========================================================
+ [swim] Preparando simulación
+==========================================================
+  Lanzando sim-outorder...
+  [OK] swim ha generado estadísticas.
+  [OK] Resumen guardado en /home/milax/Documents/AC-P1/results/AMD_Zen5/swim_AMD_Zen5.out
+  [OK] CSV individual en /home/milax/Documents/AC-P1/results/AMD_Zen5/swim_AMD_Zen5.csv
+==========================================================
+ [vpr] Preparando simulación
+==========================================================
+  Lanzando sim-outorder...
+  [OK] vpr ha generado estadísticas.
+  [OK] Resumen guardado en /home/milax/Documents/AC-P1/results/AMD_Zen5/vpr_AMD_Zen5.out
+  [OK] CSV individual en /home/milax/Documents/AC-P1/results/AMD_Zen5/vpr_AMD_Zen5.csv
+==========================================================
+ RESUMEN FINAL (AMD_Zen5)
+==========================================================
+benchmark  IPC      CPI      L1I_miss  L1D_miss  L2_miss  IFQ_occ  RUU_occ   LSQ_occ   BPR_dir  bpred_miss  sim_cycle  sim_num_insn
+ammp       <error:  <error:  <error:   <error:   <error:  <error:  <error:   <error:   <error:  0           0          0
+bzip2      3.4080   0.2934   0.0000    0.0059    0.1781   9.6099   272.4547  96.3940   0.9938   86587       29342341   100000001
+gap        3.3523   0.2983   0.0001    0.0301    0.4827   9.7987   266.0072  141.6556  0.9731   119862      12022458   40303276
+swim       5.7843   0.1729   0.0000    0.0026    0.5031   13.2747  511.0943  189.3406  0.9999   268         17288096   100000002
+vpr        1.9328   0.5174   0.0000    0.0073    0.2617   5.2842   71.9037   14.8944   0.8599   2760286     51739197   100000004
+
+Ficheros generados:
+  Resultados:  /home/milax/Documents/AC-P1/results/AMD_Zen5
+  Logs:        /home/milax/Documents/AC-P1/logs/AMD_Zen5
+  CSV global:  /home/milax/Documents/AC-P1/results/AMD_Zen5/_resumen_AMD_Zen5.csv
+
+  [OK] gnuplot detectado. Generando gráficas...
+  [OK] Gráfica: /home/milax/Documents/AC-P1/results/AMD_Zen5/grafica_ipc_AMD_Zen5.png
+
+=== FIN ===
+milax@casa:~/Documents/AC-P1$ 

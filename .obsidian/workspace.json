@@ -11,10 +11,14 @@
             "id": "9af13ac981710c15",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "recursos/lucas/INTEL VS AMD ORIGINAL.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "Nueva pestaña"
+              "title": "INTEL VS AMD ORIGINAL"
             }
           }
         ]
@@ -79,7 +83,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "db94577736fecc0c",
@@ -95,6 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "recursos/lucas/INTEL VS AMD ORIGINAL.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,6 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "recursos/lucas/INTEL VS AMD ORIGINAL.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -155,6 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "recursos/lucas/INTEL VS AMD ORIGINAL.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -181,17 +188,27 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "08c4bd8bcaab27c2",
+  "active": "9af13ac981710c15",
   "lastOpenFiles": [
-    "scripts/zen5_v3.sh",
-    "scripts/zen5_mejorado.sh",
-    "scripts/intel_cougarcove.sh",
-    "zen5_mejorado.sh",
-    "zen5_v3.sh",
-    "intel_cougarcove.sh",
+    "scripts/zen5_v3_mejorado.sh",
+    "scripts/zen5_v2.sh",
+    "scripts/lanzar script+",
+    "scripts/scripts/amd_zen5.sh",
+    "scripts/scripts/zen5_v1.sh",
+    "scripts/scripts/intel_default.sh",
+    "scripts/scripts/intel_cougarcove.sh",
+    "scripts/scripts/zen5_v2.sh",
+    "scripts/scripts/zen5_v3.sh",
+    "scripts/scripts/intel_mejorado.sh",
+    "scripts/scripts/zen5_v3_mejorado.sh",
+    "recursos/lucas/RESULTADOS BENCHMARKS.md",
+    "recursos/lucas/INTEL VS AMD ORIGINAL.md",
+    "recursos/lucas/AMD Ryzen 9 9850HX.md",
+    "2026-10-05.md",
+    "Sin título.canvas",
+    "recursos/lucas/Intel Core Ultra X9 378H.md",
     "recursos/raquel/simplescalar_mapeo_parametros.md",
     "recursos/raquel/tiempos primarios de una memoria RAM.md",
-    "recursos/raquel/prac1_AC_2627_1C.pdf",
     "recursos/raquel/Intel_Core_Ultra_X937_8H.md",
     "recursos/raquel/latencia_memoria.md",
     "recursos/raquel/intel_default_script.md",
@@ -200,14 +217,7 @@
     "recursos/raquel/AMD_default_script.md",
     "recursos/raquel/AC_p1_investigación.md",
     "recursos/lucas/results intel.md",
-    "recursos/lucas/zen5_v1.sh",
-    "recursos/lucas/prac1_AC_2627_1C.pdf",
     "recursos/lucas/results amd.md",
-    "recursos/lucas/RESULTADOS BENCHMARKS.md",
-    "recursos/lucas/intel_default.sh",
-    "recursos/lucas/Intel Core Ultra X9 378H.md",
-    "recursos/lucas/amd_zen5.sh",
-    "recursos/lucas/AMD Ryzen 9 9850HX.md",
     "Intel_Core_Ultra_X937_8H.md",
     "AMD_Ryzen_9_9850HX.md"
   ]

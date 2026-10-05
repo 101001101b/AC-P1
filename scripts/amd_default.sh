@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#=====  AMD zen 5 =======
+#=======  AMD  ========
 
 # caches
 # nsets = mida / (bloc * assoc)
 nsets_il1=$(( (32 * 1024) / (64 * 8) ))        # 32KB, 64B, 8 vies = 64
-nsets_dl1=$(( (32 * 1024) / (64 * 8) ))        # 48KB, 64B, 8 vies = 96 (eren 12 vies)
+nsets_dl1=$(( (32 * 1024) / (64 * 8) ))       # 48KB, 64B, 8 vies = 96 (eren 12 vies)
 nsets_ul2=$(( (1 * 1024 * 1024) / (64 * 16) )) # 1MB, 64B, 16 vies = 1024
 
 il1="il1:"$nsets_il1":64:8:l"
@@ -18,12 +18,12 @@ decode=8
 issue=8
 commit=8
 ruu=512  # 448
-lsq=256  # 168 (64+104)
+lsq=256  # 168(64+104)
 
-# bus i memoria dram (DDR5)
-lat_fc=149  # (<first_chunk> <inter_chunk>) (càlculs amb freqüència turbo)
+# bus i memoria dram
+lat_fc=149  # (<first_chunk> <inter_chunk>)
 lat_ic=1
-busWidth=16 # 128b
+busWidth=16
 
 #recursos
 alus_e=6

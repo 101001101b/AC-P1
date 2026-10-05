@@ -1,79 +1,113 @@
 #!/bin/bash
 # ==============================================================================
 # PRÁCTICA 1: ARQUITECTURA DE COMPUTADORES (AC-P1)
-# MODELADO: AMD RYZEN 9 9850HX (ZEN 5)
+# MODELADO: INTEL CORE ULTRA X9 378H (Panther Lake - Cougar Cove + Darkmont)
 # SIMULADOR: SimpleScalar / Alpha (sim-outorder)
 # ------------------------------------------------------------------------------
 # Este script SIEMPRE ejecuta los 5 benchmarks:
 #   bzip2, ammp, gap, swim, vpr
 #
 # Genera por cada benchmark:
-#   - <bench>_AMD_Zen5.log   -> TODO: stdout+stderr del programa + stats + resumen
-#   - <bench>_AMD_Zen5.csv   -> una fila con las métricas clave
+#   - <bench>_Intel_CougarCove.log  -> TODO: stdout+stderr + resumen + stats
+#   - <bench>_Intel_CougarCove.csv  -> una fila con las métricas clave
 #
 # Genera al final:
-#   - _resumen_AMD_Zen5.csv  -> una fila por benchmark (para Excel)
-#   - grafica_ipc.png        -> gráfica de barras con gnuplot
+#   - _resumen_Intel_CougarCove.csv -> una fila por benchmark (para Excel)
+#   - grafica_ipc.png               -> gráfica de barras con gnuplot
 # ==============================================================================
 
 # ==============================================================================
-# 1. PARÁMETROS ARQUITECTÓNICOS (con explicación)
+# 1. PARÁMETROS ARQUITECTÓNICOS DEL INTEL CORE ULTRA X9 378H
+#    Cada uno con: qué es, qué representa en Cougar Cove, cómo se busca.
 # ==============================================================================
 
-# --- FRONT-END: ancho de etapas (k-vía del procesador) ---
-FETCH_IFQ=16    # -fetch:ifqsize: instrucciones en la cola de fetch. Zen 5: 8-wide.
-DECODE_W=8      # -decode:width : instrucciones decodificadas por ciclo. Zen 5: 8.
-ISSUE_W=8       # -issue:width  : instrucciones emitidas por ciclo. Zen 5: 8.
-COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
+# ------------------------------------------------------------------------------
+# FRONT-END: ancho de las etapas del pipeline (k-vía del procesador)
+# ------------------------------------------------------------------------------
+# -fetch:ifqsize: instrucciones en la cola de fetch.
+#                 Cougar Cove: front-end muy ancho, se aproxima con 16.
+# -decode:width : instrucciones decodificadas por ciclo. Cougar Cove: 8.
+# -issue:width  : instrucciones emitidas por ciclo. Cougar Cove: 8.
+# -commit:width : instrucciones retiradas por ciclo. Cougar Cove: 8.
+FETCH_IFQ=16
+DECODE_W=8
+ISSUE_W=8
+COMMIT_W=8
 
-# --- BUFFERS ---
-RUU_SIZE=512    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (potencia de 2).
-LSQ_SIZE=256    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (potencia de 2).
-#RUU_SIZE=1024
-#LSQ_SIZE=512    
+# ------------------------------------------------------------------------------
+# BUFFERS: ventana de instrucciones y cola de memoria
+# ------------------------------------------------------------------------------
+# -ruu:size: Reorder Buffer. Cougar Cove real: 576 -> redondeado a 512 (pot. de 2).
+# -lsq:size: Load/Store Queue. Cougar Cove real: 309 (189 load + 120 store)
+#            -> redondeado a 256 (pot. de 2).
+RUU_SIZE=512
+LSQ_SIZE=256
 
-# --- CACHÉS ---
+# ------------------------------------------------------------------------------
+# CACHÉS L1/L2
 # Formato: <nombre>:<nsets>:<bsize>:<assoc>:<repl>
 #   nsets = tamaño_bytes / (bsize * assoc)
-IL1="il1:64:64:8:l"          # L1I: 32 KB, bloque 64 B, 8 vías -> 64 sets
-DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 8 vías
-#UL2="ul2:1024:64:16:l"       # L2 unificada: 1 MB, bloque 64 B, 16 vías -> 1024 sets
-UL2="ul2:2048:64:16:l"      # 2 MB, 64 B, 16 vías -> 2048 sets
-#UL2="ul2:4096:64:16:l"     # 4 MB, 64 B, 16 vías -> 4096 sets
+# ------------------------------------------------------------------------------
+# L1I: 64 KB reales, bloque 64 B, 16 vías -> nsets = 65536/(64*16) = 64
+IL1="il1:64:64:16:l"
+# L1D: 48 KB reales, 12 vías -> ajustado a 32 KB / 8 vías por potencia de 2:
+#      nsets = 32768/(64*8) = 64
+DL1="dl1:64:64:8:l"
+# L2 unificada: 2.5 MB reales -> ajustado a 2 MB, 64 B, 16 vías:
+#      nsets = 2097152/(64*16) = 2048
+#UL2="ul2:2048:64:16:l"
+UL2="ul2:4096:64:16:l"   # 4 MB -> 4096 sets
 
-# --- MEMORIA PRINCIPAL (DDR5-5600) ---
-MEM_LAT_FC=149  # -mem:lat <first_chunk>: ciclos hasta el primer bloque
-MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por cada bloque adicional
-BUS_WIDTH=16    # -mem:width: ancho del bus en bytes (128 bits)
+# ------------------------------------------------------------------------------
+# MEMORIA PRINCIPAL: bus y latencia (LPDDR5X-9600)
+# ------------------------------------------------------------------------------
+# -mem:lat <first_chunk> <inter_chunk>
+#   first_chunk: ciclos hasta el primer bloque. Estimado 142 para LPDDR5X-9600.
+#   inter_chunk: ciclos por bloque adicional. 1 ciclo.
+MEM_LAT_FC=142
+MEM_LAT_IC=1
+# -mem:width: ancho del bus en bytes. 16 bytes = 128 bits.
+BUS_WIDTH=16
 
-# --- RECURSOS FUNCIONALES ---
-IALU=6          # -res:ialu   : ALUs enteras. Zen 5: 6.
-IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
-FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
-FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
-MEMPORT=4       # -res:memport: puertos de acceso a L1D. Zen 5: 4.
+# ------------------------------------------------------------------------------
+# RECURSOS FUNCIONALES
+# ------------------------------------------------------------------------------
+# -res:ialu   : ALUs enteras. Cougar Cove: 6.
+# -res:imult  : multiplicadores/divisores enteros. Cougar Cove: 3.
+# -res:fpalu  : ALUs de coma flotante (2 FADD + 2 FMA). Cougar Cove: 4.
+# -res:fpmult : multiplicadores/divisores FP (FMA). Cougar Cove: 2.
+# -res:memport: puertos de acceso a L1D (load dedicados). Cougar Cove: 3.
+IALU=6
+IMULT=3
+FPALU=4
+FPMULT=2
+MEMPORT=3
 
-# --- SIMULACIÓN ---
-FASTFWD=100000000   # -fastfwd : instrucciones a saltar antes de medir
-MAX_INST=100000000  # -max:inst: instrucciones a simular en detalle
+# ------------------------------------------------------------------------------
+# SIMULACIÓN
+# ------------------------------------------------------------------------------
+# -fastfwd : instrucciones a saltar antes de medir. Enunciado: 100 M.
+# -max:inst: instrucciones a simular. Enunciado: 100 M.
+FASTFWD=100000000
+MAX_INST=100000000
 
 # ==============================================================================
 # 2. RUTAS
 # ==============================================================================
 BASE_DIR="$HOME/Documents/AC-P1"
-RESULTS_DIR="$BASE_DIR/results/AMD_Zen5"
+RESULTS_DIR="$BASE_DIR/results/Intel_CougarCove"
 SPEC_DIR="/lib/specs2000"
-CSV_GLOBAL="$RESULTS_DIR/_resumen_AMD_Zen5.csv"
+CSV_GLOBAL="$RESULTS_DIR/_resumen_Intel_CougarCove.csv"
 
 mkdir -p "$RESULTS_DIR"
 
 # ==============================================================================
-# 3. LISTA FIJA DE BENCHMARKS
+# 3. LISTA FIJA DE BENCHMARKS (siempre los 5)
 # ==============================================================================
 BENCHMARKS=(bzip2 ammp gap swim vpr)
 
 # ==============================================================================
-# 4. CONFIGURACIÓN DE sim-outorder
+# 4. CONFIGURACIÓN COMÚN DE sim-outorder
 # ==============================================================================
 ARGS="-fastfwd $FASTFWD -max:inst $MAX_INST \
 -fetch:ifqsize $FETCH_IFQ -decode:width $DECODE_W -issue:width $ISSUE_W -commit:width $COMMIT_W \
@@ -97,24 +131,23 @@ for BENCH in "${BENCHMARKS[@]}"; do
     echo "=========================================================="
 
     # Todos los resultados de este benchmark van a un único .log
-    LOG="$RESULTS_DIR/${BENCH}_AMD_Zen5.log"
-    CSV_BENCH="$RESULTS_DIR/${BENCH}_AMD_Zen5.csv"
+    LOG="$RESULTS_DIR/${BENCH}_Intel_CougarCove.log"
+    CSV_BENCH="$RESULTS_DIR/${BENCH}_Intel_CougarCove.csv"
 
-    # El .txt de stats de sim-outorder se genera aparte y luego lo
-    # volcamos al .log para no dejarlo suelto.
+    # El .txt de stats de sim-outorder se genera aparte y luego se vuelca al .log
     SIM_TXT="$RESULTS_DIR/_tmp_${BENCH}.txt"
 
     # Cabecera del log
     {
         echo "=========================================================="
         echo " BENCHMARK: $BENCH"
-        echo " PROCESADOR : AMD_Zen5"
+        echo " VARIANTE : Intel_CougarCove"
         echo " FECHA    : $(date)"
         echo "=========================================================="
         echo ""
     } > "$LOG"
 
-    # --- Ejecución específica ---
+    # --- Ejecución específica por benchmark ---
     case "$BENCH" in
         bzip2)
             cd "$SPEC_DIR/bzip2/data/ref" || continue
@@ -161,6 +194,8 @@ for BENCH in "${BENCHMARKS[@]}"; do
             echo ""
             echo "=========================================================="
             echo " [AVISO] $BENCH no ha generado sim_IPC."
+            echo "         Posible causa: el programa se agotó durante el"
+            echo "         fastfwd de $FASTFWD instrucciones antes de medir."
             echo "=========================================================="
         } >> "$LOG"
         rm -f "$SIM_TXT"
@@ -223,7 +258,7 @@ done
 # ==============================================================================
 echo ""
 echo "=========================================================="
-echo " RESUMEN FINAL (AMD_Zen5)"
+echo " RESUMEN FINAL (Intel_CougarCove)"
 echo "=========================================================="
 column -t -s, "$CSV_GLOBAL" 2>/dev/null || cat "$CSV_GLOBAL"
 
@@ -238,7 +273,7 @@ if command -v gnuplot >/dev/null 2>&1; then
         set style fill solid 1.0;
         set xtics rotate by -30;
         set ylabel 'IPC';
-        set title 'IPC por benchmark - AMD Zen5';
+        set title 'IPC por benchmark - Intel Cougar Cove';
         set output '$RESULTS_DIR/grafica_ipc.png';
         plot '$CSV_GLOBAL' using 2:xtic(1) title 'IPC';
     " 2>/dev/null && echo "[OK] Gráfica: $RESULTS_DIR/grafica_ipc.png"
@@ -248,7 +283,7 @@ fi
 
 echo ""
 echo "Ficheros generados en: $RESULTS_DIR"
-echo "  - <bench>_AMD_Zen5.log   (uno por benchmark)"
-echo "  - <bench>_AMD_Zen5.csv   (uno por benchmark)"
-echo "  - _resumen_AMD_Zen5.csv  (global)"
-echo "  - grafica_ipc.png        (gráfica)"
+echo "  - <bench>_Intel_CougarCove.log   (uno por benchmark)"
+echo "  - <bench>_Intel_CougarCove.csv   (uno por benchmark)"
+echo "  - _resumen_Intel_CougarCove.csv  (global)"
+echo "  - grafica_ipc.png                (gráfica)"
