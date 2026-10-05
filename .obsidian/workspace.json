@@ -183,6 +183,12 @@
   },
   "active": "08c4bd8bcaab27c2",
   "lastOpenFiles": [
+    "scripts/zen5_v3.sh",
+    "scripts/zen5_mejorado.sh",
+    "scripts/intel_cougarcove.sh",
+    "zen5_mejorado.sh",
+    "zen5_v3.sh",
+    "intel_cougarcove.sh",
     "recursos/raquel/simplescalar_mapeo_parametros.md",
     "recursos/raquel/tiempos primarios de una memoria RAM.md",
     "recursos/raquel/prac1_AC_2627_1C.pdf",
@@ -201,12 +207,7 @@
     "recursos/lucas/intel_default.sh",
     "recursos/lucas/Intel Core Ultra X9 378H.md",
     "recursos/lucas/amd_zen5.sh",
-    "recursos/lucas/IndicacionsDocumentacio (1).pdf",
-    "recursos/lucas/amd_default.sh",
     "recursos/lucas/AMD Ryzen 9 9850HX.md",
-    "recursos/raquel",
-    "recursos/lucas",
-    "recursos",
     "Intel_Core_Ultra_X937_8H.md",
     "AMD_Ryzen_9_9850HX.md"
   ]
