@@ -97,7 +97,7 @@ IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
 FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
                 #   Mejora sugerida: FPMULT=4 (útil si swim fuera FP-bound)
-MEMPORT=3                    # -res:memport: Intel Cougar Cove: 3 puertos de load
+MEMPORT=4                    # -res:memport: Intel Cougar Cove: 3 puertos de load
                              #   Mejora: MEMPORT=4 (paridad con AMD)
 
 # --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
