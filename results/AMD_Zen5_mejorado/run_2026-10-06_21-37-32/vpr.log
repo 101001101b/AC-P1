@@ -1,0 +1,25 @@
+==================================================================
+ BENCHMARK: vpr
+ VARIANTE : AMD_Zen5_mejorado
+ FECHA    : dimarts, 6 d’octubre de 2026, 21:40:29 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/vpr
+==================================================================
+
+--- RESUMEN ---
+sim_num_insn              100000000 # total number of instructions committed
+sim_cycle                  50263228 # total simulation time in cycles
+sim_IPC                      1.9895 # instructions per cycle
+sim_CPI                      0.5026 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy                4.7847 # avg IFQ occupancy (insn's)
+ruu_occupancy               71.2267 # avg RUU occupancy (insn's)
+lsq_occupancy               14.8605 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.8603 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses              234021663 # total number of accesses
+il1.miss_rate                0.0000 # miss rate (i.e., misses/ref)
+dl1.accesses               28933426 # total number of accesses
+dl1.miss_rate                0.0073 # miss rate (i.e., misses/ref)
+ul2.accesses                 285344 # total number of accesses
+ul2.miss_rate                0.1909 # miss rate (i.e., misses/ref)

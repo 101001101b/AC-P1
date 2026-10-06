@@ -1,0 +1,2 @@
+benchmark,IPC,CPI,sim_cycle,sim_num_insn,sim_total_insn,sim_exec_BW,avg_sim_slip,ifq_occupancy,ifq_full,ruu_occupancy,ruu_full,ruu_latency,lsq_occupancy,lsq_full,lsq_latency,bpred_dir_rate,ras_rate,il1_miss_rate,dl1_miss_rate,ul2_miss_rate,itlb_miss_rate,dtlb_miss_rate,sim_IPB,bpred_addr_rate,bpred_misses,il1_misses,dl1_misses,ul2_misses
+gap,3.9271,0.2546,5584744,21932119,22075440,3.9528,178.5706,14.9157,0.7304,445.8055,0.0000,112.7819,250.1541,0.7306,63.2851,0.9989,0.7842,0.0000,0.0534,0.5002,0.0000,0.0007,15.8601,0.9979,1573,542,510993,510855

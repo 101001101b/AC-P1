@@ -1,0 +1,25 @@
+==================================================================
+ BENCHMARK: swim
+ VARIANTE : AMD_Zen5_mejorado_v1
+ FECHA    : dimarts, 6 d’octubre de 2026, 21:44:43 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/swim
+==================================================================
+
+--- RESUMEN ---
+sim_num_insn              100000002 # total number of instructions committed
+sim_cycle                  17234828 # total simulation time in cycles
+sim_IPC                      5.8022 # instructions per cycle
+sim_CPI                      0.1723 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy               14.8467 # avg IFQ occupancy (insn's)
+ruu_occupancy             1021.4525 # avg RUU occupancy (insn's)
+lsq_occupancy              375.1964 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.9999 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses              100143340 # total number of accesses
+il1.miss_rate                0.0000 # miss rate (i.e., misses/ref)
+dl1.accesses               16582094 # total number of accesses
+dl1.miss_rate                0.0026 # miss rate (i.e., misses/ref)
+ul2.accesses                  86942 # total number of accesses
+ul2.miss_rate                0.2516 # miss rate (i.e., misses/ref)
