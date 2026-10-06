@@ -77,7 +77,7 @@ DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
 #   Mejora : dl1:128:64:8:l (128 KB, 8 vías)
 
 # --- L2 UNIFICADA (UL2) ---
-UL2_SIZE_KB=2048            # 1 MB. Mejora: 2048 (2 MB) o 4096 (4 MB)
+UL2_SIZE_KB=4096            # 1 MB. Mejora: 2048 (2 MB) o 4096 (4 MB)
 UL2_BSIZE=64
 UL2_ASSOC=16
 UL2_NSETS=$(( UL2_SIZE_KB * 1024 / (UL2_BSIZE * UL2_ASSOC) ))

@@ -1,6 +1,6 @@
-benchmark,AMD_Zen5,AMD_Zen5_mejorado,AMD_Zen5_mejorado_v1,Intel_CougarCove,Intel_mejorado,Intel_mejorado_v1
-bzip2,0.0000,0.3963,0.0000,0.0000,0.3779,0.0000
-ammp,0.9521,0.7739,0.9359,0.7681,0.7735,0.9346
-gap,0.3689,0.7302,0.7397,0.3670,0.7306,0.7399
-swim,0.0000,0.3382,0.0000,0.0000,0.3398,0.0000
-vpr,0.0001,0.0031,0.0001,0.0001,0.0022,0.0001
+benchmark,AMD_Zen5,AMD_Zen5_mejorado,Intel_CougarCove,Intel_mejorado
+bzip2,0.0000,0.3771,0.0000,0.3751
+ammp,0.9521,0.7739,0.7681,0.7739
+gap,0.3689,0.7302,0.3670,0.7307
+swim,0.0000,0.3382,0.0000,0.3381
+vpr,0.0001,0.0025,0.0001,0.0022
