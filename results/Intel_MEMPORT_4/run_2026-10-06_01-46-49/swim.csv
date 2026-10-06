@@ -1,0 +1,2 @@
+benchmark,IPC,CPI,L1I_miss,L1D_miss,L2_miss,IFQ_occ,RUU_occ,LSQ_occ,BPR_dir,sim_cycle,sim_num_insn
+swim,5.7845,0.1729,0.0000,0.0026,0.5031,13.2748,511.0996,189.3427,0.9999,17287668,100000005

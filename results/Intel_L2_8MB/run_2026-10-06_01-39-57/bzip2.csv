@@ -1,0 +1,2 @@
+benchmark,IPC,CPI,L1I_miss,L1D_miss,L2_miss,IFQ_occ,RUU_occ,LSQ_occ,BPR_dir,sim_cycle,sim_num_insn
+bzip2,3.5656,0.2805,0.0000,0.0061,0.1549,9.3300,269.7766,95.3952,0.9938,28045406,100000001

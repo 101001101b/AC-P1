@@ -1,7 +1,7 @@
 #!/bin/bash
 # ==============================================================================
 # PRÁCTICA 1: ARQUITECTURA DE COMPUTADORES 
-# MODELADO: AMD RYZEN 9 9850HX (ZEN 5 - Fire Range)
+# MODELADO: INTEL CORE ULTRA X9 378H (Panther Lake - Cougar Cove + Darkmont)
 # SIMULADOR: SimpleScalar / Alpha (sim-outorder)
 # ------------------------------------------------------------------------------
 # VARIANTE BASE (valores por defecto del procesador real, ajustados a potencias
@@ -31,7 +31,7 @@ RESULTS_ROOT="$PROJECT_DIR/results"
 # ==============================================================================
 # 1. IDENTIFICACIÓN DE LA VARIANTE
 # ==============================================================================
-VARIANTE="AMD_Zen5"
+VARIANTE="Intel_CougarCove"
 
 # Timestamp para no pisar resultados anteriores
 TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
@@ -60,16 +60,16 @@ LSQ_SIZE=256    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2)
 
 # --- CACHÉS: formato <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 #   nsets = tamaño_bytes / (bsize * assoc)
-IL1="il1:64:64:8:l"          # L1I: 32 KB, bloque 64 B, 8 vías -> 64 sets
-                             #   Mejora sugerida: il1:128:64:8:l (64 KB, 8 vías)
-DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 8 vías
-                             #   Mejora sugerida: dl1:128:64:8:l (128 KB, 8 vías)
-UL2="ul2:1024:64:16:l"       # L2 unificada: 1 MB, bloque 64 B, 16 vías -> 1024 sets
-                             #   Mejora sugerida: ul2:2048:64:16:l (2 MB -> ammp ×5.6)
-                             #                    ul2:4096:64:16:l (4 MB -> margen)
+IL1="il1:64:64:16:l"         # L1I: 64 KB, bloque 64 B, 16 vías -> 64 sets
+                             #   Mejora: il1:128:64:16:l (128 KB, 16 vías)
+DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
+                             #   Mejora: dl1:128:64:8:l (128 KB, 8 vías)
+UL2="ul2:4096:64:16:l"       # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 2048 sets
+                             #   Mejora: ul2:4096:64:16:l (4 MB)
+                             #           ul2:8192:64:16:l (8 MB)
 
 # --- MEMORIA PRINCIPAL (DDR5-5600) ---
-MEM_LAT_FC=149  # -mem:lat <first_chunk>: ciclos hasta el primer bloque
+MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
                 #   Mejora sugerida: 100 (DDR5 más rápida, escenario optimista)
 MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional
 BUS_WIDTH=16    # -mem:width: ancho del bus en bytes (128 bits)
@@ -81,7 +81,8 @@ IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
 FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
                 #   Mejora sugerida: FPMULT=4 (útil si swim fuera FP-bound)
-MEMPORT=4       # -res:memport: puertos de acceso a L1D. Zen 5: 4.
+MEMPORT=3                    # -res:memport: Intel Cougar Cove: 3 puertos de load
+                             #   Mejora: MEMPORT=4 (paridad con AMD)
 
 # --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
 FASTFWD=100000000   # -fastfwd : 100 M instrucciones de calentamiento

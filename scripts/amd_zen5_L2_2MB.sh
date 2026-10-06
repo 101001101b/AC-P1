@@ -31,7 +31,7 @@ RESULTS_ROOT="$PROJECT_DIR/results"
 # ==============================================================================
 # 1. IDENTIFICACIÓN DE LA VARIANTE
 # ==============================================================================
-VARIANTE="AMD_Zen5"
+VARIANTE="AMD_Zen5_L2_2MB"
 
 # Timestamp para no pisar resultados anteriores
 TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"

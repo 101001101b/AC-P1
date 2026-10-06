@@ -31,7 +31,7 @@ RESULTS_ROOT="$PROJECT_DIR/results"
 # ==============================================================================
 # 1. IDENTIFICACIÓN DE LA VARIANTE
 # ==============================================================================
-VARIANTE="AMD_Zen5"
+VARIANTE="AMD_Zen5_L2_4MB"
 
 # Timestamp para no pisar resultados anteriores
 TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
@@ -64,8 +64,8 @@ IL1="il1:64:64:8:l"          # L1I: 32 KB, bloque 64 B, 8 vías -> 64 sets
                              #   Mejora sugerida: il1:128:64:8:l (64 KB, 8 vías)
 DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 8 vías
                              #   Mejora sugerida: dl1:128:64:8:l (128 KB, 8 vías)
-UL2="ul2:1024:64:16:l"       # L2 unificada: 1 MB, bloque 64 B, 16 vías -> 1024 sets
-                             #   Mejora sugerida: ul2:2048:64:16:l (2 MB -> ammp ×5.6)
+UL2="ul2:4096:64:16:l"       # L2 unificada: 1 MB, bloque 64 B, 16 vías -> 1024 sets
+                             #   Mejora sugerida: ul2:2048:64:16:l (2 MB -> ammp ×5.6->esperado)
                              #                    ul2:4096:64:16:l (4 MB -> margen)
 
 # --- MEMORIA PRINCIPAL (DDR5-5600) ---
