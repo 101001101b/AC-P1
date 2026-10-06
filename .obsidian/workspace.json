@@ -23,12 +23,10 @@
             "id": "f787b0bd304e41d0",
             "type": "leaf",
             "state": {
-              "type": "image",
-              "state": {
-                "file": "results/AMD_Zen5_L2_2MB/run_2026-10-06_13-19-14/grafica_ipc.png"
-              },
-              "icon": "lucide-image",
-              "title": "grafica_ipc"
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Nueva pestaña"
             }
           }
         ],

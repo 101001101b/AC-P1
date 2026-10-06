@@ -58,15 +58,31 @@ RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2).
 LSQ_SIZE=512    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2).
                 #   Mejora : LSQ_SIZE=512 (+doble cola, bueno para ammp).
 
+
 # --- CACHÉS: formato <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
+# --- L1 INSTRUCCIONES (L1I) ---
+IL1_SIZE_KB=32              # Tamaño en KB
+IL1_BSIZE=64                # Tamaño de bloque en bytes
+IL1_ASSOC=8                 # Vías (asociatividad)
+IL1_NSETS=$(( IL1_SIZE_KB * 1024 / (IL1_BSIZE * IL1_ASSOC) ))
+IL1="il1:${IL1_NSETS}:${IL1_BSIZE}:${IL1_ASSOC}:l"
+#   Mejora : il1:128:64:8:l (64 KB, 8 vías)
 #   nsets = tamaño_bytes / (bsize * assoc)
-IL1="il1:64:64:16:l"         # L1I: 64 KB, bloque 64 B, 16 vías -> 64 sets
-                             #   Mejora: il1:128:64:16:l (128 KB, 16 vías)
-DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
-                             #   Mejora: dl1:128:64:8:l (128 KB, 8 vías)
-UL2="ul2:4096:64:128:l"       # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 2048 sets
-                             #   Mejora: ul2:4096:64:16:l (4 MB) ****
-                             #           ul2:8192:64:16:l (8 MB)
+
+# --- L1 DATOS (L1D) ---
+DL1_SIZE_KB=32              # 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
+DL1_BSIZE=64
+DL1_ASSOC=8
+DL1_NSETS=$(( DL1_SIZE_KB * 1024 / (DL1_BSIZE * DL1_ASSOC) ))
+DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
+#   Mejora : dl1:128:64:8:l (128 KB, 8 vías)
+
+# --- L2 UNIFICADA (UL2) ---
+UL2_SIZE_KB=4096            # 1 MB. Mejora: 2048 (2 MB) o 4096 (4 MB)
+UL2_BSIZE=128               # Cambio de tamaño bloque
+UL2_ASSOC=16
+UL2_NSETS=$(( UL2_SIZE_KB * 1024 / (UL2_BSIZE * UL2_ASSOC) ))
+UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
 
 # --- MEMORIA PRINCIPAL (DDR5-5600) ---
 MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
