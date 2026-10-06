@@ -68,7 +68,7 @@ UL2="ul2:2048:64:16:l"       # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 
                              #   Mejora: ul2:4096:64:16:l (4 MB)
                              #           ul2:8192:64:16:l (8 MB)
 
-# --- MEMORIA PRINCIPAL (DDR5-5600) ---
+# --- MEMORIA PRINCIPAL (LPDDR5X-9600) ---
 MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
                 #   Mejora sugerida: 100 (DDR5 más rápida, escenario optimista)
 MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional

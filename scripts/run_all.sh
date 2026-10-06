@@ -13,22 +13,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Lista ordenada de variantes a ejecutar
 VARIANTES=(
-    # AMD
     amd_zen5.sh
-    amd_zen5_L2_2MB.sh
-    amd_zen5_L2_4MB.sh
-    amd_zen5_RUU_1024.sh
-    amd_zen5_LSQ_512.sh
-    amd_zen5_mejorado.sh
-    # Intel
+    amd_zen5_mejorado_v1.sh
     intel_cougarcove.sh
-    intel_L2_4MB.sh
-    intel_L2_8MB.sh
-    intel_RUU_1024.sh
-    intel_MEMPORT_4.sh
-    intel_mejorado.sh
+    intel_mejorado_v1.sh
 )
-
 INICIO=$(date +%s)
 
 for V in "${VARIANTES[@]}"; do

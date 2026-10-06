@@ -68,7 +68,7 @@ UL2="ul2:2048:64:16:l"       # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 
                              #   Mejora: ul2:4096:64:16:l (4 MB)
                              #           ul2:8192:64:16:l (8 MB)
 
-# --- MEMORIA PRINCIPAL (DDR5-5600) ---
+# --- MEMORIA PRINCIPAL (LPDDR5X-9600) ---
 MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
                 #   Mejora sugerida: 100 (DDR5 más rápida, escenario optimista)
 MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional
@@ -262,22 +262,30 @@ echo "=================================================================="
     done
 }
 
-if command -v gnuplot >/dev/null 2>&1; then
-    gnuplot -e "
-        set datafile separator ',';
-        set terminal png size 900,500;
-        set style data histograms;
-        set style histogram clustered gap 1;
-        set style fill solid 1.0 border -1;
-        set boxwidth 0.9;
-        set xtics rotate by 0;
-        set ylabel 'IPC';
-        set xlabel 'Benchmark';
-        set title 'IPC - $VARIANTE';
-        set output '$RESULTS_DIR/grafica_ipc.png';
-        plot '$CSV_GLOBAL' using 2:xtic(1) title 'IPC';
-    " 2>/dev/null && echo "[OK] $RESULTS_DIR/grafica_ipc.png"
-fi
-
+# Guardar versión transpuesta del CSV (métricas en filas, benchmarks en columnas)
+CSV_T="$RESULTS_DIR/_resumen_transpuesto.csv"
+{
+    header=$(head -1 "$CSV_GLOBAL")
+    n_rows=$(($(wc -l < "$CSV_GLOBAL") - 1))
+    n_cols=$(echo "$header" | awk -F, '{print NF}')
+    # Primera fila: "metrica,bench1,bench2,..."
+    printf "metrica"
+    for r in $(seq 2 $((n_rows + 1))); do
+        b=$(sed -n "${r}p" "$CSV_GLOBAL" | cut -d, -f1)
+        printf ",%s" "$b"
+    done
+    printf "\n"
+    # Resto de filas: una métrica por fila
+    for c in $(seq 1 $n_cols); do
+        metric=$(echo "$header" | cut -d, -f$c)
+        printf "%s" "$metric"
+        for r in $(seq 2 $((n_rows + 1))); do
+            val=$(sed -n "${r}p" "$CSV_GLOBAL" | cut -d, -f$c)
+            printf ",%s" "$val"
+        done
+        printf "\n"
+    done
+} > "$CSV_T"
+echo "[OK] $CSV_T"
 echo ""
 echo "Ficheros en: $RESULTS_DIR"

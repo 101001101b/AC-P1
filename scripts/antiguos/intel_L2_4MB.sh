@@ -31,7 +31,7 @@ RESULTS_ROOT="$PROJECT_DIR/results"
 # ==============================================================================
 # 1. IDENTIFICACIÓN DE LA VARIANTE
 # ==============================================================================
-VARIANTE="Intel_L2_8MB"
+VARIANTE="intel_L2_4MB"
 
 # Timestamp para no pisar resultados anteriores
 TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"
@@ -64,11 +64,11 @@ IL1="il1:64:64:16:l"         # L1I: 64 KB, bloque 64 B, 16 vías -> 64 sets
                              #   Mejora: il1:128:64:16:l (128 KB, 16 vías)
 DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
                              #   Mejora: dl1:128:64:8:l (128 KB, 8 vías)
-UL2="ul2:8192:64:16:l"      # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 2048 sets
+UL2="ul2:4096:64:16:l"       # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 2048 sets
                              #   Mejora: ul2:4096:64:16:l (4 MB)
                              #           ul2:8192:64:16:l (8 MB)
 
-# --- MEMORIA PRINCIPAL (DDR5-5600) ---
+# --- MEMORIA PRINCIPAL (LPDDR5X-9600) ---
 MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
                 #   Mejora sugerida: 100 (DDR5 más rápida, escenario optimista)
 MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional

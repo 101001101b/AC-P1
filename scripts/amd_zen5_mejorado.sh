@@ -53,7 +53,7 @@ COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
                 #   Mejora sugerida: COMMIT_W=16 (sin evidencia de mejora en tests).
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
-RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2).
+RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2). *************
                 #   Mejora sugerida: RUU_SIZE=1024 (+doble ventana, bueno para swim).
 LSQ_SIZE=256    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2).
                 #   Mejora sugerida: LSQ_SIZE=512 (+doble cola, bueno para ammp).
@@ -65,7 +65,7 @@ IL1="il1:64:64:8:l"          # L1I: 32 KB, bloque 64 B, 8 vías -> 64 sets
 DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 8 vías
                              #   Mejora sugerida: dl1:128:64:8:l (128 KB, 8 vías)
 UL2="ul2:2048:64:16:l"       # L2 unificada: 1 MB, bloque 64 B, 16 vías -> 1024 sets
-                             #   Mejora sugerida: ul2:2048:64:16:l (2 MB -> ammp ×5.6)
+                             #   Mejora sugerida: ul2:2048:64:16:l (2 MB -> ammp ×5.6) *********
                              #                    ul2:4096:64:16:l (4 MB -> margen)
 
 # --- MEMORIA PRINCIPAL (DDR5-5600) ---
@@ -262,22 +262,31 @@ echo "=================================================================="
     done
 }
 
-if command -v gnuplot >/dev/null 2>&1; then
-    gnuplot -e "
-        set datafile separator ',';
-        set terminal png size 900,500;
-        set style data histograms;
-        set style histogram clustered gap 1;
-        set style fill solid 1.0 border -1;
-        set boxwidth 0.9;
-        set xtics rotate by 0;
-        set ylabel 'IPC';
-        set xlabel 'Benchmark';
-        set title 'IPC - $VARIANTE';
-        set output '$RESULTS_DIR/grafica_ipc.png';
-        plot '$CSV_GLOBAL' using 2:xtic(1) title 'IPC';
-    " 2>/dev/null && echo "[OK] $RESULTS_DIR/grafica_ipc.png"
-fi
 
+# Guardar versión transpuesta del CSV (métricas en filas, benchmarks en columnas)
+CSV_T="$RESULTS_DIR/_resumen_transpuesto.csv"
+{
+    header=$(head -1 "$CSV_GLOBAL")
+    n_rows=$(($(wc -l < "$CSV_GLOBAL") - 1))
+    n_cols=$(echo "$header" | awk -F, '{print NF}')
+    # Primera fila: "metrica,bench1,bench2,..."
+    printf "metrica"
+    for r in $(seq 2 $((n_rows + 1))); do
+        b=$(sed -n "${r}p" "$CSV_GLOBAL" | cut -d, -f1)
+        printf ",%s" "$b"
+    done
+    printf "\n"
+    # Resto de filas: una métrica por fila
+    for c in $(seq 1 $n_cols); do
+        metric=$(echo "$header" | cut -d, -f$c)
+        printf "%s" "$metric"
+        for r in $(seq 2 $((n_rows + 1))); do
+            val=$(sed -n "${r}p" "$CSV_GLOBAL" | cut -d, -f$c)
+            printf ",%s" "$val"
+        done
+        printf "\n"
+    done
+} > "$CSV_T"
+echo "[OK] $CSV_T"
 echo ""
 echo "Ficheros en: $RESULTS_DIR"
