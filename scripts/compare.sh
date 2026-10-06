@@ -192,11 +192,142 @@ plot_metric() {
     " 2>/dev/null && echo "[OK] $OUT"
 }
 
+# ==============================================================================
+# 5. COMPARATIVA FINAL: base vs mejorado (AMD vs Intel)
+# ==============================================================================
+# Crea un CSV específico con las 4 columnas clave:
+#   AMD base, AMD mejorado, Intel base, Intel mejorado
+# Y genera una gráfica agrupada por benchmark.
+
+CSV_FINAL="$OUT_DIR/comparativa_final.csv"
+GRAF_FINAL="$OUT_DIR/grafica_comparativa_final.png"
+
+# Variantes a comparar (cámbialas aquí si renombras los scripts)
+V_AMD_BASE="AMD_Zen5"
+V_AMD_MEJ="AMD_Zen5_mejorado"
+V_INTEL_BASE="Intel_CougarCove"
+V_INTEL_MEJ="Intel_mejorado"
+
+# Función auxiliar: saca el IPC de un benchmark para una variante
+get_ipc() {
+    local variante="$1" bench="$2"
+    awk -F, -v v="$variante" -v b="$bench" '$1==v && $2==b {print $3}' "$CSV_LARGO"
+}
+
+# Construir CSV comparativa_final.csv
+{
+    echo "benchmark,AMD_base,AMD_mejorado,Intel_base,Intel_mejorado"
+    for B in "${BENCHMARKS[@]}"; do
+        A_BASE=$(get_ipc "$V_AMD_BASE"   "$B")
+        A_MEJ=$(get_ipc "$V_AMD_MEJ"     "$B")
+        I_BASE=$(get_ipc "$V_INTEL_BASE" "$B")
+        I_MEJ=$(get_ipc "$V_INTEL_MEJ"   "$B")
+        echo "$B,${A_BASE:-0},${A_MEJ:-0},${I_BASE:-0},${I_MEJ:-0}"
+    done
+    # Fila de medias
+    A_BASE_M=$(awk -F, -v v="$V_AMD_BASE"   '$1==v {s+=$3; n++} END {if(n) printf "%.4f", s/n}' "$CSV_LARGO")
+    A_MEJ_M=$(awk -F, -v v="$V_AMD_MEJ"     '$1==v {s+=$3; n++} END {if(n) printf "%.4f", s/n}' "$CSV_LARGO")
+    I_BASE_M=$(awk -F, -v v="$V_INTEL_BASE" '$1==v {s+=$3; n++} END {if(n) printf "%.4f", s/n}' "$CSV_LARGO")
+    I_MEJ_M=$(awk -F, -v v="$V_INTEL_MEJ"   '$1==v {s+=$3; n++} END {if(n) printf "%.4f", s/n}' "$CSV_LARGO")
+    echo "MEDIA,${A_BASE_M:-0},${A_MEJ_M:-0},${I_BASE_M:-0},${I_MEJ_M:-0}"
+} > "$CSV_FINAL"
+
+echo "[OK] $CSV_FINAL"
+
+# Gráfica agrupada final
+if command -v gnuplot >/dev/null 2>&1; then
+    gnuplot -e "
+        set datafile separator ',';
+        set terminal pngcairo size 1200,600 font 'Arial,11';
+        set style data histograms;
+        set style histogram clustered gap 1;
+        set style fill solid 1.0 border -1;
+        set boxwidth 0.9;
+        set xtics rotate by 0;
+        set grid ytics;
+        set ylabel 'IPC';
+        set xlabel 'Benchmark';
+        set title 'AMD base vs AMD mejorado vs Intel base vs Intel mejorado';
+        set key outside right;
+        set yrange [0:*];
+        set output '$GRAF_FINAL';
+        plot '$CSV_FINAL' using 2:xtic(1) title 'AMD base', \
+             '' using 3:xtic(1) title 'AMD mejorado', \
+             '' using 4:xtic(1) title 'Intel base', \
+             '' using 5:xtic(1) title 'Intel mejorado'
+    " 2>/dev/null && echo "[OK] $GRAF_FINAL"
+fi
+
 plot_metric "IPC"       "$OUT_DIR/_comparativa_IPC.csv"     "$OUT_DIR/grafica_IPC.png"     "IPC"
 plot_metric "L2 miss"   "$OUT_DIR/_comparativa_L2_miss.csv" "$OUT_DIR/grafica_L2_miss.png" "L2 miss rate"
 plot_metric "RUU occ"   "$OUT_DIR/_comparativa_RUU_occ.csv" "$OUT_DIR/grafica_RUU_occ.png" "RUU occupancy"
 plot_metric "LSQ occ"   "$OUT_DIR/_comparativa_LSQ_occ.csv" "$OUT_DIR/grafica_LSQ_occ.png" "LSQ occupancy"
 
+# ==============================================================================
+# 5. COMPARATIVA FINAL: base vs mejorado (AMD vs Intel)
+# ==============================================================================
+# Crea un CSV específico con las 4 columnas clave:
+#   AMD base, AMD mejorado, Intel base, Intel mejorado
+# Y genera una gráfica agrupada por benchmark.
+
+CSV_FINAL="$OUT_DIR/comparativa_final.csv"
+GRAF_FINAL="$OUT_DIR/grafica_comparativa_final.png"
+
+# Variantes a comparar (cámbialas aquí si renombras los scripts)
+V_AMD_BASE="AMD_Zen5"
+V_AMD_MEJ="AMD_Zen5_mejorado"
+V_INTEL_BASE="Intel_CougarCove"
+V_INTEL_MEJ="Intel_mejorado"
+
+# Función auxiliar: saca el IPC de un benchmark para una variante
+get_ipc() {
+    local variante="$1" bench="$2"
+    awk -F, -v v="$variante" -v b="$bench" '$1==v && $2==b {print $3}' "$CSV_LARGO"
+}
+
+# Construir CSV comparativa_final.csv
+{
+    echo "benchmark,AMD_base,AMD_mejorado,Intel_base,Intel_mejorado"
+    for B in "${BENCHMARKS[@]}"; do
+        A_BASE=$(get_ipc "$V_AMD_BASE"   "$B")
+        A_MEJ=$(get_ipc "$V_AMD_MEJ"     "$B")
+        I_BASE=$(get_ipc "$V_INTEL_BASE" "$B")
+        I_MEJ=$(get_ipc "$V_INTEL_MEJ"   "$B")
+        echo "$B,${A_BASE:-0},${A_MEJ:-0},${I_BASE:-0},${I_MEJ:-0}"
+    done
+    # Fila de medias
+    A_BASE_M=$(awk -F, -v v="$V_AMD_BASE"   '$1==v {s+=$3; n++} END {if(n) printf "%.4f", s/n}' "$CSV_LARGO")
+    A_MEJ_M=$(awk -F, -v v="$V_AMD_MEJ"     '$1==v {s+=$3; n++} END {if(n) printf "%.4f", s/n}' "$CSV_LARGO")
+    I_BASE_M=$(awk -F, -v v="$V_INTEL_BASE" '$1==v {s+=$3; n++} END {if(n) printf "%.4f", s/n}' "$CSV_LARGO")
+    I_MEJ_M=$(awk -F, -v v="$V_INTEL_MEJ"   '$1==v {s+=$3; n++} END {if(n) printf "%.4f", s/n}' "$CSV_LARGO")
+    echo "MEDIA,${A_BASE_M:-0},${A_MEJ_M:-0},${I_BASE_M:-0},${I_MEJ_M:-0}"
+} > "$CSV_FINAL"
+
+echo "[OK] $CSV_FINAL"
+
+# Gráfica agrupada final
+if command -v gnuplot >/dev/null 2>&1; then
+    gnuplot -e "
+        set datafile separator ',';
+        set terminal pngcairo size 1200,600 font 'Arial,11';
+        set style data histograms;
+        set style histogram clustered gap 1;
+        set style fill solid 1.0 border -1;
+        set boxwidth 0.9;
+        set xtics rotate by 0;
+        set grid ytics;
+        set ylabel 'IPC';
+        set xlabel 'Benchmark';
+        set title 'AMD base vs AMD mejorado vs Intel base vs Intel mejorado';
+        set key outside right;
+        set yrange [0:*];
+        set output '$GRAF_FINAL';
+        plot '$CSV_FINAL' using 2:xtic(1) title 'AMD base', \
+             '' using 3:xtic(1) title 'AMD mejorado', \
+             '' using 4:xtic(1) title 'Intel base', \
+             '' using 5:xtic(1) title 'Intel mejorado'
+    " 2>/dev/null && echo "[OK] $GRAF_FINAL"
+fi
 echo ""
 echo "=================================================================="
 echo " COMPARATIVA COMPLETA"
