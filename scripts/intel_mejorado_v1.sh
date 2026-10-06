@@ -44,19 +44,19 @@ mkdir -p "$RESULTS_DIR"
 
 # --- FRONT-END: ancho de etapas del pipeline (k-vía del procesador) ---
 FETCH_IFQ=16    # -fetch:ifqsize: instrucciones en la cola de fetch. Zen 5: 8-wide.
-                #   Mejora sugerida: FETCH_IFQ=32 (doble cola, sin evidencia de mejora).
+                #   Mejora : FETCH_IFQ=32 (doble cola, sin evidencia de mejora).
 DECODE_W=8      # -decode:width : instrucciones decodificadas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: DECODE_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : DECODE_W=16 (sin evidencia de mejora en tests).
 ISSUE_W=8       # -issue:width  : instrucciones emitidas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: ISSUE_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : ISSUE_W=16 (sin evidencia de mejora en tests).
 COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: COMMIT_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : COMMIT_W=16 (sin evidencia de mejora en tests).
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
 RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2).
-                #   Mejora sugerida: RUU_SIZE=1024 (+doble ventana, bueno para swim).****
+                #   Mejora : RUU_SIZE=1024 (+doble ventana, bueno para swim).****
 LSQ_SIZE=512    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2).
-                #   Mejora sugerida: LSQ_SIZE=512 (+doble cola, bueno para ammp).
+                #   Mejora : LSQ_SIZE=512 (+doble cola, bueno para ammp).
 
 # --- CACHÉS: formato <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 #   nsets = tamaño_bytes / (bsize * assoc)
@@ -64,24 +64,24 @@ IL1="il1:64:64:16:l"         # L1I: 64 KB, bloque 64 B, 16 vías -> 64 sets
                              #   Mejora: il1:128:64:16:l (128 KB, 16 vías)
 DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
                              #   Mejora: dl1:128:64:8:l (128 KB, 8 vías)
-UL2="ul2:4096:64:16:l"       # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 2048 sets
+UL2="ul2:4096:64:128:l"       # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 2048 sets
                              #   Mejora: ul2:4096:64:16:l (4 MB) ****
                              #           ul2:8192:64:16:l (8 MB)
 
 # --- MEMORIA PRINCIPAL (DDR5-5600) ---
 MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
-                #   Mejora sugerida: 100 (DDR5 más rápida, escenario optimista)
+                #   Mejora : 100 (DDR5 más rápida, escenario optimista)
 MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional
 BUS_WIDTH=16    # -mem:width: ancho del bus en bytes (128 bits)
 
 # --- RECURSOS FUNCIONALES ---
 IALU=6          # -res:ialu   : ALUs enteras. Zen 5: 6.
-                #   Mejora sugerida: IALU=8 (sin evidencia de mejora)
+                #   Mejora : IALU=8 (sin evidencia de mejora)
 IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
 FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
-                #   Mejora sugerida: FPMULT=4 (útil si swim fuera FP-bound)
-MEMPORT=3                    # -res:memport: Intel Cougar Cove: 3 puertos de load
+                #   Mejora : FPMULT=4 (útil si swim fuera FP-bound)
+MEMPORT=6                    # -res:memport: Intel Cougar Cove: 3 puertos de load
                              #   Mejora: MEMPORT=4 (paridad con AMD)
 
 # --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---

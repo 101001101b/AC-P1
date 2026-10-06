@@ -64,7 +64,7 @@ IL1="il1:64:64:8:l"          # L1I: 32 KB, bloque 64 B, 8 vías -> 64 sets
                              #   Mejora sugerida: il1:128:64:8:l (64 KB, 8 vías)
 DL1="dl1:64:64:8:l"          # L1D: 48 KB reales, 12 vías -> adaptado a 8 vías
                              #   Mejora sugerida: dl1:128:64:8:l (128 KB, 8 vías)
-UL2="ul2:4096:64:16:l"       # L2 unificada: 1 MB, bloque 64 B, 16 vías -> 1024 sets
+UL2="ul2:4096:64:128:l"       # L2 unificada: 1 MB, bloque 64 B, 16 vías -> 1024 sets
                              #   Mejora sugerida: ul2:2048:64:16:l (2 MB -> ammp ×5.6) *********
                              #                    ul2:4096:64:16:l (4 MB -> margen)
 
@@ -81,7 +81,7 @@ IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
 FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
                 #   Mejora sugerida: FPMULT=4 (útil si swim fuera FP-bound)
-MEMPORT=4       # -res:memport: puertos de acceso a L1D. Zen 5: 4.
+MEMPORT=6       # -res:memport: puertos de acceso a L1D. Zen 5: 4.
 
 # --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
 FASTFWD=100000000   # -fastfwd : 100 M instrucciones de calentamiento
