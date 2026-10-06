@@ -138,7 +138,7 @@ MD="$OUT_DIR/_comparativa.md"
     printf "| Benchmark |"
     for V in "${VARIANTS[@]}"; do printf " %s |" "$V"; done
     printf "\n|---|"
-    for V in "${VARIANTS[@]}"; do printf "---:|"; done
+    for V in "${VARIANTS[@]}"; do echo -n "---:|"; done
     printf "\n"
     for B in "${BENCHMARKS[@]}"; do
         printf "| **%s** |" "$B"

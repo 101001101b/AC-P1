@@ -31,7 +31,7 @@ RESULTS_ROOT="$PROJECT_DIR/results"
 # ==============================================================================
 # 1. IDENTIFICACIÓN DE LA VARIANTE
 # ==============================================================================
-VARIANTE="Intel_CougarCove"
+VARIANTE="intel_L2_4MB"
 
 # Timestamp para no pisar resultados anteriores
 TIMESTAMP="$(date +%Y-%m-%d_%H-%M-%S)"

@@ -1,0 +1,25 @@
+==================================================================
+ BENCHMARK: bzip2
+ VARIANTE : intel_L2_4MB
+ FECHA    : dimarts, 6 d’octubre de 2026, 09:13:22 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/bzip2
+==================================================================
+
+--- RESUMEN ---
+sim_num_insn              100000001 # total number of instructions committed
+sim_cycle                  28045406 # total simulation time in cycles
+sim_IPC                      3.5656 # instructions per cycle
+sim_CPI                      0.2805 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy                9.3300 # avg IFQ occupancy (insn's)
+ruu_occupancy              269.7766 # avg RUU occupancy (insn's)
+lsq_occupancy               95.3952 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.9938 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses              103359444 # total number of accesses
+il1.miss_rate                0.0000 # miss rate (i.e., misses/ref)
+dl1.accesses               31818575 # total number of accesses
+dl1.miss_rate                0.0061 # miss rate (i.e., misses/ref)
+ul2.accesses                 364536 # total number of accesses
+ul2.miss_rate                0.1549 # miss rate (i.e., misses/ref)
