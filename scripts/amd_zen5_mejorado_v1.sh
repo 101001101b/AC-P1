@@ -56,7 +56,7 @@ COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
 RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2). *************
                 #   Mejora sugerida: RUU_SIZE=1024 (+doble ventana, bueno para swim).
 LSQ_SIZE=512    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2).
-                #   Mejora sugerida: LSQ_SIZE=512 (+doble cola, bueno para ammp).
+                #   Mejora: LSQ_SIZE=512 (para ammp).
 
 # --- CACHÉS: formato <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 #   nsets = tamaño_bytes / (bsize * assoc)
