@@ -11,17 +11,28 @@
             "id": "9af13ac981710c15",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "recursos/lucas/INTEL VS AMD ORIGINAL.md",
-                "mode": "source",
-                "source": false
+                "file": "recursos/lucas/IndicacionsDocumentacio (1).pdf"
               },
-              "icon": "lucide-file",
-              "title": "INTEL VS AMD ORIGINAL"
+              "icon": "lucide-file-text",
+              "title": "IndicacionsDocumentacio (1)"
+            }
+          },
+          {
+            "id": "f787b0bd304e41d0",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "recursos/lucas/prac1_AC_2627_1C.pdf"
+              },
+              "icon": "lucide-file-text",
+              "title": "prac1_AC_2627_1C"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -188,25 +199,38 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "9af13ac981710c15",
+  "active": "f787b0bd304e41d0",
   "lastOpenFiles": [
-    "scripts/zen5_v3_mejorado.sh",
-    "scripts/zen5_v2.sh",
-    "scripts/lanzar script+",
-    "scripts/scripts/amd_zen5.sh",
-    "scripts/scripts/zen5_v1.sh",
-    "scripts/scripts/intel_default.sh",
-    "scripts/scripts/intel_cougarcove.sh",
-    "scripts/scripts/zen5_v2.sh",
-    "scripts/scripts/zen5_v3.sh",
-    "scripts/scripts/intel_mejorado.sh",
-    "scripts/scripts/zen5_v3_mejorado.sh",
-    "recursos/lucas/RESULTADOS BENCHMARKS.md",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/_resumen.csv",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/vpr.csv",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/vpr.log",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/swim.log",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/swim.csv",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/gap.csv",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/grafica_ipc.png",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/gap.log",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/bzip2.log",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/bzip2.csv",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/ammp.log",
+    "results/intel_L2_4MB/run_2026-10-06_13-59-53/ammp.csv",
+    "results/Intel_RUU_1024/run_2026-10-06_14-07-25/grafica_ipc.png",
+    "results/Intel_MEMPORT_4/run_2026-10-06_14-11-23/grafica_ipc.png",
+    "results/AMD_Zen5_mejorado/run_2026-10-06_13-52-03/grafica_ipc.png",
+    "results/AMD_Zen5_LSQ_512/run_2026-10-06_13-39-08/grafica_ipc.png",
+    "results/AMD_Zen5_L2_4MB/run_2026-10-06_13-22-59/grafica_ipc.png",
+    "results/_comparativa/grafica_ul2_misses.png",
+    "results/_comparativa/grafica_ul2_miss.png",
+    "results/_comparativa/grafica_sim_exec_BW.png",
+    "results/_comparativa/grafica_sim_cycle.png",
+    "recursos/lucas/results amd.md",
+    "results/_comparativa/_comparativa.md",
+    "README.md",
     "recursos/lucas/INTEL VS AMD ORIGINAL.md",
+    "recursos/lucas/Intel Core Ultra X9 378H.md",
+    "recursos/lucas/RESULTADOS BENCHMARKS.md",
     "recursos/lucas/AMD Ryzen 9 9850HX.md",
     "2026-10-05.md",
     "Sin título.canvas",
-    "recursos/lucas/Intel Core Ultra X9 378H.md",
     "recursos/raquel/simplescalar_mapeo_parametros.md",
     "recursos/raquel/tiempos primarios de una memoria RAM.md",
     "recursos/raquel/Intel_Core_Ultra_X937_8H.md",
@@ -217,7 +241,6 @@
     "recursos/raquel/AMD_default_script.md",
     "recursos/raquel/AC_p1_investigación.md",
     "recursos/lucas/results intel.md",
-    "recursos/lucas/results amd.md",
     "Intel_Core_Ultra_X937_8H.md",
     "AMD_Ryzen_9_9850HX.md"
   ]
