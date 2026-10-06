@@ -244,7 +244,24 @@ echo ""
 echo "=================================================================="
 echo " RESUMEN $VARIANTE"
 echo "=================================================================="
-column -t -s, "$CSV_GLOBAL" 2>/dev/null || cat "$CSV_GLOBAL"
+# Tabla transpuesta: métricas en filas, benchmarks en columnas
+{
+    # Extraer cabecera y datos
+    header=$(head -1 "$CSV_GLOBAL")
+    # Número de benchmarks (filas de datos)
+    n_rows=$(($(wc -l < "$CSV_GLOBAL") - 1))
+    # Para cada columna (métrica), imprimir una fila
+    n_cols=$(echo "$header" | awk -F, '{print NF}')
+    for c in $(seq 1 $n_cols); do
+        metric=$(echo "$header" | cut -d, -f$c)
+        printf "%-20s" "$metric"
+        for r in $(seq 2 $((n_rows + 1))); do
+            val=$(sed -n "${r}p" "$CSV_GLOBAL" | cut -d, -f$c)
+            printf " %12s" "$val"
+        done
+        printf "\n"
+    done
+}
 
 if command -v gnuplot >/dev/null 2>&1; then
     gnuplot -e "

@@ -23,12 +23,12 @@
             "id": "f787b0bd304e41d0",
             "type": "leaf",
             "state": {
-              "type": "pdf",
+              "type": "image",
               "state": {
-                "file": "recursos/lucas/prac1_AC_2627_1C.pdf"
+                "file": "results/AMD_Zen5_L2_2MB/run_2026-10-06_13-19-14/grafica_ipc.png"
               },
-              "icon": "lucide-file-text",
-              "title": "prac1_AC_2627_1C"
+              "icon": "lucide-image",
+              "title": "grafica_ipc"
             }
           }
         ],
@@ -94,7 +94,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 415.8999938964844
   },
   "right": {
     "id": "db94577736fecc0c",
@@ -201,6 +201,14 @@
   },
   "active": "f787b0bd304e41d0",
   "lastOpenFiles": [
+    "recursos/lucas/IndicacionsDocumentacio (1).pdf",
+    "results/AMD_Zen5_L2_2MB/run_2026-10-06_13-19-14/grafica_ipc.png",
+    "results/AMD_Zen5/run_2026-10-06_13-06-32/grafica_ipc.png",
+    "results/_comparativa/_comparativa.md",
+    "GRAFICAS Y TABLAS.xlsx",
+    "C4823D00",
+    "~$GRAFICAS Y TABLAS.xlsx",
+    "recursos/lucas/prac1_AC_2627_1C.pdf",
     "results/intel_L2_4MB/run_2026-10-06_13-59-53/_resumen.csv",
     "results/intel_L2_4MB/run_2026-10-06_13-59-53/vpr.csv",
     "results/intel_L2_4MB/run_2026-10-06_13-59-53/vpr.log",
@@ -208,11 +216,6 @@
     "results/intel_L2_4MB/run_2026-10-06_13-59-53/swim.csv",
     "results/intel_L2_4MB/run_2026-10-06_13-59-53/gap.csv",
     "results/intel_L2_4MB/run_2026-10-06_13-59-53/grafica_ipc.png",
-    "results/intel_L2_4MB/run_2026-10-06_13-59-53/gap.log",
-    "results/intel_L2_4MB/run_2026-10-06_13-59-53/bzip2.log",
-    "results/intel_L2_4MB/run_2026-10-06_13-59-53/bzip2.csv",
-    "results/intel_L2_4MB/run_2026-10-06_13-59-53/ammp.log",
-    "results/intel_L2_4MB/run_2026-10-06_13-59-53/ammp.csv",
     "results/Intel_RUU_1024/run_2026-10-06_14-07-25/grafica_ipc.png",
     "results/Intel_MEMPORT_4/run_2026-10-06_14-11-23/grafica_ipc.png",
     "results/AMD_Zen5_mejorado/run_2026-10-06_13-52-03/grafica_ipc.png",
@@ -220,10 +223,7 @@
     "results/AMD_Zen5_L2_4MB/run_2026-10-06_13-22-59/grafica_ipc.png",
     "results/_comparativa/grafica_ul2_misses.png",
     "results/_comparativa/grafica_ul2_miss.png",
-    "results/_comparativa/grafica_sim_exec_BW.png",
-    "results/_comparativa/grafica_sim_cycle.png",
     "recursos/lucas/results amd.md",
-    "results/_comparativa/_comparativa.md",
     "README.md",
     "recursos/lucas/INTEL VS AMD ORIGINAL.md",
     "recursos/lucas/Intel Core Ultra X9 378H.md",

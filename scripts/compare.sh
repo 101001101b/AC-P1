@@ -105,22 +105,25 @@ MD="$OUT_DIR/_comparativa.md"
         IFS=':' read -r COL_NAME FILE_NAME IDX <<< "$M"
         echo "## $COL_NAME"
         echo ""
-        printf "| Benchmark |"
-        for V in "${VARIANTS[@]}"; do printf " %s |" "$V"; done
+        # Cabecera: benchmark como columnas
+        printf "| Variante |"
+        for B in "${BENCHMARKS[@]}"; do printf " %s |" "$B"; done
         printf "\n|---|"
-        for V in "${VARIANTS[@]}"; do printf -- "---:|"; done
+        for B in "${BENCHMARKS[@]}"; do printf -- "---:|"; done
         printf "\n"
-        for B in "${BENCHMARKS[@]}"; do
-            printf "| **%s** |" "$B"
-            for V in "${VARIANTS[@]}"; do
+        # Una fila por variante
+        for V in "${VARIANTS[@]}"; do
+            printf "| **%s** |" "$V"
+            for B in "${BENCHMARKS[@]}"; do
                 VAL=$(awk -F, -v v="$V" -v b="$B" -v i="$IDX" '$1==v && $2==b {print $i}' "$CSV_LARGO")
                 printf " %s |" "${VAL:--}"
             done
             printf "\n"
         done
+        # Fila de medias por variante
         printf "| **MEDIA** |"
-        for V in "${VARIANTS[@]}"; do
-            MEDIA=$(awk -F, -v v="$V" -v i="$IDX" '$1==v {s+=$i; n++} END {if(n>0) printf "%.4f", s/n}' "$CSV_LARGO")
+        for B in "${BENCHMARKS[@]}"; do
+            MEDIA=$(awk -F, -v b="$B" -v i="$IDX" '$2==b {s+=$i; n++} END {if(n>0) printf "%.4f", s/n}' "$CSV_LARGO")
             printf " **%s** |" "${MEDIA:--}"
         done
         printf "\n\n"
@@ -242,8 +245,27 @@ gnuplot -e "
 " 2>/dev/null && echo "[OK] $GRAF_FINAL"
 
 echo ""
+echo # Tabla resumen transpuesta (benchmarks en columnas)
+echo ""
+echo "=================================================================="
+echo " RESUMEN IPC (transpuesto: métricas en filas, benchmarks en columnas)"
+echo "=================================================================="
+printf "%-20s" "Métrica"
+for B in "${BENCHMARKS[@]}"; do printf " %12s" "$B"; done
+printf "\n"
+for V in "${VARIANTS[@]}"; do
+    printf "%-20s" "$V"
+    for B in "${BENCHMARKS[@]}"; do
+        VAL=$(awk -F, -v v="$V" -v b="$B" '$1==v && $2==b {print $3}' "$CSV_LARGO")
+        printf " %12s" "${VAL:--}"
+    done
+    printf "\n"
+done
+
+echo ""
 echo "=================================================================="
 echo " COMPARATIVA COMPLETA"
 echo " Resultados en: $OUT_DIR"
 echo "=================================================================="
+ls -la "$OUT_DIR"
 ls -la "$OUT_DIR"
