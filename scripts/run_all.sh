@@ -14,9 +14,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Lista ordenada de variantes a ejecutar
 VARIANTES=(
     amd_zen5.sh
-    amd_zen5_mejorado_v1.sh
+    amd_zen5_mejorado.sh
     intel_cougarcove.sh
-    intel_mejorado_v1.sh
+    intel_mejorado.sh
 )
 INICIO=$(date +%s)
 
