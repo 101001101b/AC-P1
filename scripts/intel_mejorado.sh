@@ -123,7 +123,7 @@ ARGS="-fastfwd $FASTFWD -max:inst $MAX_INST \
 # 6. CABECERA DEL CSV GLOBAL
 # ==============================================================================
 CSV_GLOBAL="$RESULTS_DIR/_resumen.csv"
-echo "benchmark,IPC,CPI,L1I_miss,L1D_miss,L2_miss,IFQ_occ,RUU_occ,LSQ_occ,BPR_dir,sim_cycle,sim_num_insn" > "$CSV_GLOBAL"
+echo "benchmark,IPC,CPI,sim_cycle,sim_num_insn,sim_total_insn,sim_exec_BW,avg_sim_slip,ifq_occupancy,ifq_full,ruu_occupancy,ruu_full,ruu_latency,lsq_occupancy,lsq_full,lsq_latency,bpred_dir_rate,ras_rate,il1_miss_rate,dl1_miss_rate,ul2_miss_rate,itlb_miss_rate,dtlb_miss_rate,sim_IPB,bpred_addr_rate,bpred_misses,il1_misses,dl1_misses,ul2_misses" > "$CSV_GLOBAL"
 
 # ==============================================================================
 # 7. BUCLE PRINCIPAL
@@ -194,23 +194,46 @@ for BENCH in "${BENCHMARKS[@]}"; do
 
     echo "  [OK] $BENCH"
 
-    # Extraer métricas
-    IPC=$(grep -m1 'sim_IPC' "$SIM_TXT" | awk '{print $2}')
-    CPI=$(grep -m1 'sim_CPI' "$SIM_TXT" | awk '{print $2}')
-    L1I=$(grep -m1 '^il1.miss_rate' "$SIM_TXT" | awk '{print $2}')
-    L1D=$(grep -m1 '^dl1.miss_rate' "$SIM_TXT" | awk '{print $2}')
-    L2=$(grep -m1 '^ul2.miss_rate' "$SIM_TXT" | awk '{print $2}')
-    IFQ=$(grep -m1 'ifq_occupancy' "$SIM_TXT" | awk '{print $2}')
-    RUU=$(grep -m1 'ruu_occupancy' "$SIM_TXT" | awk '{print $2}')
-    LSQ=$(grep -m1 'lsq_occupancy' "$SIM_TXT" | awk '{print $2}')
-    BPR=$(grep -m1 'bpred_bimod.bpred_dir_rate' "$SIM_TXT" | awk '{print $2}')
-    CYC=$(grep -m1 'sim_cycle' "$SIM_TXT" | awk '{print $2}')
-    NINS=$(grep -m1 'sim_num_insn' "$SIM_TXT" | awk '{print $2}')
+    # --- Extraer métricas (28) y escribir CSV individual ---
+    # Patrones con ^ para no confundir sim_num_insn con sim_total_insn, etc.
+    IPC=$(grep -m1 '^sim_IPC ' "$SIM_TXT" | awk '{print $2}')
+    CPI=$(grep -m1 '^sim_CPI ' "$SIM_TXT" | awk '{print $2}')
+    CYC=$(grep -m1 '^sim_cycle ' "$SIM_TXT" | awk '{print $2}')
+    NINS=$(grep -m1 '^sim_num_insn ' "$SIM_TXT" | awk '{print $2}')
+    TINS=$(grep -m1 '^sim_total_insn ' "$SIM_TXT" | awk '{print $2}')
+    BW=$(grep -m1 '^sim_exec_BW ' "$SIM_TXT" | awk '{print $2}')
+    SLIP=$(grep -m1 '^avg_sim_slip ' "$SIM_TXT" | awk '{print $2}')
+    IFQO=$(grep -m1 '^ifq_occupancy ' "$SIM_TXT" | awk '{print $2}')
+    IFQF=$(grep -m1 '^ifq_full ' "$SIM_TXT" | awk '{print $2}')
+    RUUO=$(grep -m1 '^ruu_occupancy ' "$SIM_TXT" | awk '{print $2}')
+    RUUF=$(grep -m1 '^ruu_full ' "$SIM_TXT" | awk '{print $2}')
+    RUUL=$(grep -m1 '^ruu_latency ' "$SIM_TXT" | awk '{print $2}')
+    LSQO=$(grep -m1 '^lsq_occupancy ' "$SIM_TXT" | awk '{print $2}')
+    LSQF=$(grep -m1 '^lsq_full ' "$SIM_TXT" | awk '{print $2}')
+    LSQL=$(grep -m1 '^lsq_latency ' "$SIM_TXT" | awk '{print $2}')
+    BPRD=$(grep -m1 '^bpred_bimod.bpred_dir_rate ' "$SIM_TXT" | awk '{print $2}')
+    RAS=$(grep -m1 '^bpred_bimod.ras_rate.PP ' "$SIM_TXT" | awk '{print $2}')
+    IL1M=$(grep -m1 '^il1.miss_rate ' "$SIM_TXT" | awk '{print $2}')
+    DL1M=$(grep -m1 '^dl1.miss_rate ' "$SIM_TXT" | awk '{print $2}')
+    UL2M=$(grep -m1 '^ul2.miss_rate ' "$SIM_TXT" | awk '{print $2}')
+    ITLBM=$(grep -m1 '^itlb.miss_rate ' "$SIM_TXT" | awk '{print $2}')
+    DTLBM=$(grep -m1 '^dtlb.miss_rate ' "$SIM_TXT" | awk '{print $2}')
+    IPB=$(grep -m1 '^sim_IPB ' "$SIM_TXT" | awk '{print $2}')
+    BPRA=$(grep -m1 '^bpred_bimod.bpred_addr_rate ' "$SIM_TXT" | awk '{print $2}')
+    BPRM=$(grep -m1 '^bpred_bimod.misses ' "$SIM_TXT" | awk '{print $2}')
+    IL1MISS=$(grep -m1 '^il1.misses ' "$SIM_TXT" | awk '{print $2}')
+    DL1MISS=$(grep -m1 '^dl1.misses ' "$SIM_TXT" | awk '{print $2}')
+    UL2MISS=$(grep -m1 '^ul2.misses ' "$SIM_TXT" | awk '{print $2}')
 
-    echo "benchmark,IPC,CPI,L1I_miss,L1D_miss,L2_miss,IFQ_occ,RUU_occ,LSQ_occ,BPR_dir,sim_cycle,sim_num_insn" > "$CSV_BENCH"
-    echo "$BENCH,$IPC,$CPI,$L1I,$L1D,$L2,$IFQ,$RUU,$LSQ,$BPR,$CYC,$NINS" >> "$CSV_BENCH"
-    echo "$BENCH,$IPC,$CPI,$L1I,$L1D,$L2,$IFQ,$RUU,$LSQ,$BPR,$CYC,$NINS" >> "$CSV_GLOBAL"
+    HEADER="benchmark,IPC,CPI,sim_cycle,sim_num_insn,sim_total_insn,sim_exec_BW,avg_sim_slip,ifq_occupancy,ifq_full,ruu_occupancy,ruu_full,ruu_latency,lsq_occupancy,lsq_full,lsq_latency,bpred_dir_rate,ras_rate,il1_miss_rate,dl1_miss_rate,ul2_miss_rate,itlb_miss_rate,dtlb_miss_rate,sim_IPB,bpred_addr_rate,bpred_misses,il1_misses,dl1_misses,ul2_misses"
 
+    ROW="$BENCH,$IPC,$CPI,$CYC,$NINS,$TINS,$BW,$SLIP,$IFQO,$IFQF,$RUUO,$RUUF,$RUUL,$LSQO,$LSQF,$LSQL,$BPRD,$RAS,$IL1M,$DL1M,$UL2M,$ITLBM,$DTLBM,$IPB,$BPRA,$BPRM,$IL1MISS,$DL1MISS,$UL2MISS"
+
+    echo "$HEADER" > "$CSV_BENCH"
+    echo "$ROW" >> "$CSV_BENCH"
+
+    # --- Añadir fila al CSV global ---
+    echo "$ROW" >> "$CSV_GLOBAL"
     rm -f "$SIM_TXT"
 done
 

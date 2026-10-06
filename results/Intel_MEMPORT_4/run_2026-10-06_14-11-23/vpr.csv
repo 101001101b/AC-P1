@@ -1,0 +1,2 @@
+benchmark,IPC,CPI,sim_cycle,sim_num_insn,sim_total_insn,sim_exec_BW,avg_sim_slip,ifq_occupancy,ifq_full,ruu_occupancy,ruu_full,ruu_latency,lsq_occupancy,lsq_full,lsq_latency,bpred_dir_rate,ras_rate,il1_miss_rate,dl1_miss_rate,ul2_miss_rate,itlb_miss_rate,dtlb_miss_rate,sim_IPB,bpred_addr_rate,bpred_misses,il1_misses,dl1_misses,ul2_misses
+vpr,1.9946,0.5013,50134227,100000001,206772994,4.1244,16.3054,5.0719,0.0343,59.6827,0.0375,14.4707,12.8560,0.0001,3.1171,0.8603,0.8092,0.0000,0.0073,0.1909,0.0000,0.0010,5.0755,0.8468,2752779,474,211303,54456

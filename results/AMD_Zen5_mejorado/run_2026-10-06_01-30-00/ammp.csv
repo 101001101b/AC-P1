@@ -1,2 +1,0 @@
-benchmark,IPC,CPI,L1I_miss,L1D_miss,L2_miss,IFQ_occ,RUU_occ,LSQ_occ,BPR_dir,sim_cycle,sim_num_insn
-ammp,1.0683,0.9360,0.0000,0.1301,0.0091,13.4559,407.5309,200.8176,0.9667,93603733,100000002
