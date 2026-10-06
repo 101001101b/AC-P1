@@ -1,0 +1,25 @@
+==================================================================
+ BENCHMARK: ammp
+ VARIANTE : Intel_mejorado_v1
+ FECHA    : dimarts, 6 d’octubre de 2026, 20:29:04 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/ammp
+==================================================================
+
+--- RESUMEN ---
+sim_num_insn                  61762 # total number of instructions committed
+sim_cycle                    404643 # total simulation time in cycles
+sim_IPC                      0.1526 # instructions per cycle
+sim_CPI                      6.5516 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy               14.8108 # avg IFQ occupancy (insn's)
+ruu_occupancy              942.0898 # avg RUU occupancy (insn's)
+lsq_occupancy              469.5876 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.9635 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses                  82909 # total number of accesses
+il1.miss_rate                0.0019 # miss rate (i.e., misses/ref)
+dl1.accesses                  16691 # total number of accesses
+dl1.miss_rate                0.1601 # miss rate (i.e., misses/ref)
+ul2.accesses                   2836 # total number of accesses
+ul2.miss_rate                0.9905 # miss rate (i.e., misses/ref)
