@@ -2,18 +2,15 @@
 # ==============================================================================
 # PRÁCTICA 1: ARQUITECTURA DE COMPUTADORES 
 # MODELADO: AMD RYZEN 9 9850HX (ZEN 5 - Fire Range)
-# SIMULADOR: SimpleScalar / Alpha (sim-outorder)
+# SIMULADOR: SimpleScalar
 # ------------------------------------------------------------------------------
-# VARIANTE BASE (valores por defecto del procesador real, ajustados a potencias
-# de 2 según exige SimpleScalar).
 #
-# USO:  ./amd_zen5.sh
+# VERSIÓN:  ./amd_zen5.sh
 #
 # Genera en results/AMD_Zen5/run_<timestamp>/:
 #   - <bench>.log            (stdout+stderr+stats+resumen de cada benchmark)
 #   - <bench>.csv            (una fila con las métricas clave)
 #   - _resumen.csv           (una fila por benchmark)
-#   - grafica_ipc.png        (gráfica de barras)
 #
 # Para hacer variantes "mejoradas" (L2 2MB, RUU 1024, etc.), copia este script,
 # cambia SOLO el bloque "VARIANTE" y el parámetro correspondiente. El resto se
@@ -44,20 +41,19 @@ mkdir -p "$RESULTS_DIR"
 
 # --- FRONT-END: ancho de etapas del pipeline (k-vía del procesador) ---
 FETCH_IFQ=16    # -fetch:ifqsize: instrucciones en la cola de fetch. Zen 5: 8-wide.
-                #   Mejora sugerida: FETCH_IFQ=32 (doble cola, sin evidencia de mejora).
+                #   Mejora : FETCH_IFQ=32 
 DECODE_W=8      # -decode:width : instrucciones decodificadas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: DECODE_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : DECODE_W=16
 ISSUE_W=8       # -issue:width  : instrucciones emitidas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: ISSUE_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : ISSUE_W=16
 COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: COMMIT_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : COMMIT_W=16              
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
-RUU_SIZE=512    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2).
-                #   Mejora sugerida: RUU_SIZE=1024 (+doble ventana, bueno para swim).
-LSQ_SIZE=256    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2).
-                #   Mejora sugerida: LSQ_SIZE=512 (+doble cola, bueno para ammp).
-
+RUU_SIZE=512    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 
+                #   Mejora : RUU_SIZE=1024 (+doble ventana)
+LSQ_SIZE=256    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256
+                #   Mejora : LSQ_SIZE=512 (+doble cola)
 # --- CACHÉS: formato <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 # --- L1 INSTRUCCIONES (L1I) ---
 IL1_SIZE_KB=32              # Tamaño en KB

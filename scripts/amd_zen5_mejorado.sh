@@ -2,22 +2,16 @@
 # ==============================================================================
 # PRÁCTICA 1: ARQUITECTURA DE COMPUTADORES 
 # MODELADO: AMD RYZEN 9 9850HX (ZEN 5 - Fire Range)
-# SIMULADOR: SimpleScalar / Alpha (sim-outorder)
-# ------------------------------------------------------------------------------
-# VARIANTE BASE (valores por defecto del procesador real, ajustados a potencias
-# de 2 según exige SimpleScalar).
+# SIMULADOR: SimpleScalar
+# ------------------------------------------------------------------------------.
 #
-# USO:  ./amd_zen5.sh
+# VERSIÓN:  ./amd_zen5_mejorado.sh
 #
 # Genera en results/AMD_Zen5/run_<timestamp>/:
 #   - <bench>.log            (stdout+stderr+stats+resumen de cada benchmark)
 #   - <bench>.csv            (una fila con las métricas clave)
 #   - _resumen.csv           (una fila por benchmark)
-#   - grafica_ipc.png        (gráfica de barras)
 #
-# Para hacer variantes "mejoradas" (L2 2MB, RUU 1024, etc.), copia este script,
-# cambia SOLO el bloque "VARIANTE" y el parámetro correspondiente. El resto se
-# autogestiona.
 # ==============================================================================
 
 # ==============================================================================
@@ -43,22 +37,21 @@ mkdir -p "$RESULTS_DIR"
 # ==============================================================================
 
 # --- FRONT-END: ancho de etapas del pipeline (k-vía del procesador) ---
-FETCH_IFQ=16    # -fetch:ifqsize: instrucciones en la cola de fetch. Zen 5: 8-wide.
-                #   Mejora : FETCH_IFQ=32 (doble cola, sin evidencia de mejora).
+FETCH_IFQ=32    # cambio a FETCH_IFQ=32 
 DECODE_W=8      # -decode:width : instrucciones decodificadas por ciclo. Zen 5: 8.
-                #   Mejora : DECODE_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : DECODE_W=16
 ISSUE_W=8       # -issue:width  : instrucciones emitidas por ciclo. Zen 5: 8.
-                #   Mejora : ISSUE_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : ISSUE_W=16
 COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
-                #   Mejora : COMMIT_W=16 (sin evidencia de mejora en tests).
+                #   Mejora : COMMIT_W=16.
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
-RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2). *************
-                #   Mejora : RUU_SIZE=1024 (+doble ventana, bueno para swim).
-LSQ_SIZE=256    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2).
-                #   Mejora : LSQ_SIZE=512 (+doble cola, bueno para ammp).
+RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 
+                #   Mejora : RUU_SIZE=1024 (+doble ventana)
+LSQ_SIZE=512    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256
+                #   Mejora : LSQ_SIZE=512 (+doble cola).
 
-# --- CACHÉS: formato <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
+# --- CACHÉS: <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 # --- L1 INSTRUCCIONES (L1I) ---
 IL1_SIZE_KB=32              # Tamaño en KB
 IL1_BSIZE=64                # Tamaño de bloque en bytes
@@ -69,7 +62,7 @@ IL1="il1:${IL1_NSETS}:${IL1_BSIZE}:${IL1_ASSOC}:l"
 #   nsets = tamaño_bytes / (bsize * assoc)
 
 # --- L1 DATOS (L1D) ---
-DL1_SIZE_KB=32              # 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
+DL1_SIZE_KB=64              # subir a 64
 DL1_BSIZE=64
 DL1_ASSOC=8
 DL1_NSETS=$(( DL1_SIZE_KB * 1024 / (DL1_BSIZE * DL1_ASSOC) ))
@@ -78,7 +71,7 @@ DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
 
 # --- L2 UNIFICADA (UL2) ---
 UL2_SIZE_KB=4096            # 1 MB. Mejora: 2048 (2 MB) o 4096 (4 MB)
-UL2_BSIZE=64
+UL2_BSIZE=128               # Cambio tamaño bloque
 UL2_ASSOC=16
 UL2_NSETS=$(( UL2_SIZE_KB * 1024 / (UL2_BSIZE * UL2_ASSOC) ))
 UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
@@ -89,7 +82,7 @@ UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
 MEM_LAT_FC=149  # -mem:lat <first_chunk>: ciclos hasta el primer bloque
                 #   Mejora : 100 (DDR5 más rápida, escenario optimista)
 MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional
-BUS_WIDTH=16    # -mem:width: ancho del bus en bytes (128 bits)
+BUS_WIDTH=32    # cambio a 32
 
 # --- RECURSOS FUNCIONALES ---
 IALU=6          # -res:ialu   : ALUs enteras. Zen 5: 6.
@@ -97,8 +90,8 @@ IALU=6          # -res:ialu   : ALUs enteras. Zen 5: 6.
 IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
 FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
-                #   Mejora : FPMULT=4 
-MEMPORT=4       # -res:memport: puertos de acceso a L1D. Zen 5: 4.
+                #   Mejora : FPMULT=4
+MEMPORT=6       # cambio a 6
 
 # --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
 FASTFWD=100000000   # -fastfwd : 100 M instrucciones de calentamiento
@@ -254,13 +247,13 @@ for BENCH in "${BENCHMARKS[@]}"; do
 done
 
 # ==============================================================================
-# 8. RESUMEN FINAL + GRÁFICA
+# 8. RESUMEN FINAL
 # ==============================================================================
 echo ""
 echo "=================================================================="
 echo " RESUMEN $VARIANTE"
 echo "=================================================================="
-# Tabla transpuesta: métricas en filas, benchmarks en columnas
+# Tabla métricas en filas, benchmarks en columnas
 {
     # Extraer cabecera y datos
     header=$(head -1 "$CSV_GLOBAL")
