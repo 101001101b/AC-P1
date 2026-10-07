@@ -1,0 +1,35 @@
+==================================================================
+ BENCHMARK: gap
+ VARIANTE : Intel_CougarCove
+ FECHA    : dimecres, 7 d’octubre de 2026, 18:44:54 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/gap
+==================================================================
+[ 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800 ]
+30414093201713378043612608166064768844377641568960512000000000000
+[ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 ]
+[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
+17035900270730601418919867558071677342938596450600561760371485120
+[ 1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975 ]
+[ 1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975 ]
+976939307467007552986994066961675455550246347757474482558637
+[ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 ]
+[ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 ]
+
+--- RESUMEN ---
+sim_num_insn              100000002 # total number of instructions committed
+sim_cycle                  27859051 # total simulation time in cycles
+sim_IPC                      3.5895 # instructions per cycle
+sim_CPI                      0.2786 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy                8.1099 # avg IFQ occupancy (insn's)
+ruu_occupancy              228.0961 # avg RUU occupancy (insn's)
+lsq_occupancy               99.7218 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.9408 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses              144089039 # total number of accesses
+il1.miss_rate                0.0000 # miss rate (i.e., misses/ref)
+dl1.accesses               37705612 # total number of accesses
+dl1.miss_rate                0.0159 # miss rate (i.e., misses/ref)
+ul2.accesses                1183329 # total number of accesses
+ul2.miss_rate                0.4874 # miss rate (i.e., misses/ref)
