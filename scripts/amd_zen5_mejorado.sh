@@ -86,7 +86,7 @@ IALU=6
 IMULT=3         
 FPALU=4         
 FPMULT=2      
-MEMPORT=2
+MEMPORT=4
 
 FASTFWD=100000000   # -fastfwd : 100 M instrucciones de calentamiento
 MAX_INST=100000000  # -max:inst: 100 M instrucciones simuladas en detalle

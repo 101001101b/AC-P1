@@ -1,0 +1,25 @@
+==================================================================
+ BENCHMARK: ammp
+ VARIANTE : AMD_Zen5_mejorado
+ FECHA    : dimecres, 7 d’octubre de 2026, 20:22:03 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/ammp
+==================================================================
+
+--- RESUMEN ---
+sim_num_insn              100000002 # total number of instructions committed
+sim_cycle                  93603733 # total simulation time in cycles
+sim_IPC                      1.0683 # instructions per cycle
+sim_CPI                      0.9360 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy               13.4559 # avg IFQ occupancy (insn's)
+ruu_occupancy              407.5309 # avg RUU occupancy (insn's)
+lsq_occupancy              200.8176 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.9667 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses              130056978 # total number of accesses
+il1.miss_rate                0.0000 # miss rate (i.e., misses/ref)
+dl1.accesses               25698233 # total number of accesses
+dl1.miss_rate                0.1301 # miss rate (i.e., misses/ref)
+ul2.accesses                3374376 # total number of accesses
+ul2.miss_rate                0.0091 # miss rate (i.e., misses/ref)
