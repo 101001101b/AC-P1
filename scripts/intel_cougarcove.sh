@@ -48,13 +48,11 @@ FETCH_IFQ=16    # -fetch:ifqsize: instrucciones en la cola de fetch. Zen 5: 8-wi
 DECODE_W=8      # -decode:width : instrucciones decodificadas por ciclo. Zen 5: 8.
                 #   Mejora : DECODE_W=16 (sin evidencia de mejora en tests).
 ISSUE_W=8       # -issue:width  : instrucciones emitidas por ciclo. Zen 5: 8.
-                #   Mejora : ISSUE_W=16 (sin evidencia de mejora en tests).
 COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
                 #   Mejora : COMMIT_W=16 (sin evidencia de mejora en tests).
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
 RUU_SIZE=512    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2).
-                #   Mejora : RUU_SIZE=1024 (+doble ventana, bueno para swim).
 LSQ_SIZE=256    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2).
                 #   Mejora : LSQ_SIZE=512 (+doble cola, bueno para ammp).
 
@@ -123,6 +121,11 @@ prepare_specwork() {
     if [ -d "/lib/specs2000/$b/data/ref" ]; then
         cp -n /lib/specs2000/$b/data/ref/* "$SPECWORK_DIR/$b/" 2>/dev/null
     fi
+    # FIX GAP
+    if [ "$b" = "gap" ] && [ -d "/lib/specs2000/gap/data/all" ]; then
+        mkdir -p "$SPECWORK_DIR/gap/all"
+        cp -n /lib/specs2000/gap/data/all/* "$SPECWORK_DIR/gap/all/" 2>/dev/null
+    fi
 }
 
 # ==============================================================================
@@ -177,7 +180,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
         ammp)  sim-outorder $ARGS -redir:sim "$SIM_TXT" \
                   ./ammp.exe < ammp.in >> "$LOG" 2>&1 ;;
         gap)   sim-outorder $ARGS -redir:sim "$SIM_TXT" \
-                  ./gap.exe -l ./ -q -m 192M < ref.in >> "$LOG" 2>&1 ;;
+                  ./gap.exe -l ./all -q -m 192M < ref.in >> "$LOG" 2>&1 ;;
         swim)  sim-outorder $ARGS -redir:sim "$SIM_TXT" \
                   ./swim.exe < swim.in >> "$LOG" 2>&1 ;;
         vpr)   sim-outorder $ARGS -redir:sim "$SIM_TXT" \

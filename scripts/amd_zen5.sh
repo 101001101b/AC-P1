@@ -106,7 +106,7 @@ MAX_INST=100000000  # -max:inst: 100 M instrucciones simuladas en detalle
 BENCHMARKS=(bzip2 ammp gap swim vpr)
 
 # ==============================================================================
-# 4. PREPARAR specwork (copia .exe e inputs si faltan)
+# 4. PREPARAR specwork
 # ==============================================================================
 prepare_specwork() {
     local b="$1"
@@ -119,8 +119,12 @@ prepare_specwork() {
     if [ -d "/lib/specs2000/$b/data/ref" ]; then
         cp -n /lib/specs2000/$b/data/ref/* "$SPECWORK_DIR/$b/" 2>/dev/null
     fi
+    # FIX GAP
+    if [ "$b" = "gap" ] && [ -d "/lib/specs2000/gap/data/all" ]; then
+        mkdir -p "$SPECWORK_DIR/gap/all"
+        cp -n /lib/specs2000/gap/data/all/* "$SPECWORK_DIR/gap/all/" 2>/dev/null
+    fi
 }
-
 # ==============================================================================
 # 5. CONFIGURACIÓN COMÚN DE sim-outorder
 # ==============================================================================
@@ -174,7 +178,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
         ammp)  sim-outorder $ARGS -redir:sim "$SIM_TXT" \
                   ./ammp.exe < ammp.in >> "$LOG" 2>&1 ;;
         gap)   sim-outorder $ARGS -redir:sim "$SIM_TXT" \
-                  ./gap.exe -l ./ -q -m 192M < ref.in >> "$LOG" 2>&1 ;;
+                  ./gap.exe -l ./all -q -m 192M < ref.in >> "$LOG" 2>&1 ;;
         swim)  sim-outorder $ARGS -redir:sim "$SIM_TXT" \
                   ./swim.exe < swim.in >> "$LOG" 2>&1 ;;
         vpr)   sim-outorder $ARGS -redir:sim "$SIM_TXT" \

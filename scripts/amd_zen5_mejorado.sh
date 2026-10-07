@@ -3,6 +3,7 @@
 # PRÁCTICA 1: ARQUITECTURA DE COMPUTADORES 
 # MODELADO: AMD RYZEN 9 9850HX (ZEN 5 - Fire Range)
 # SIMULADOR: SimpleScalar
+# ALUMNOS: Raquel Cornadó y Lucas Sierra
 # ------------------------------------------------------------------------------.
 #
 # VERSIÓN:  ./amd_zen5_mejorado.sh
@@ -37,7 +38,8 @@ mkdir -p "$RESULTS_DIR"
 # ==============================================================================
 
 # --- FRONT-END: ancho de etapas del pipeline (k-vía del procesador) ---
-FETCH_IFQ=32    # cambio a FETCH_IFQ=32 
+FETCH_IFQ=16
+
 DECODE_W=8      # -decode:width : instrucciones decodificadas por ciclo. Zen 5: 8.
                 #   Mejora : DECODE_W=16
 ISSUE_W=8       # -issue:width  : instrucciones emitidas por ciclo. Zen 5: 8.
@@ -46,32 +48,29 @@ COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
                 #   Mejora : COMMIT_W=16.
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
-RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 
-                #   Mejora : RUU_SIZE=1024 (+doble ventana)
-LSQ_SIZE=512    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256
-                #   Mejora : LSQ_SIZE=512 (+doble cola).
+RUU_SIZE=1024    
+LSQ_SIZE=512    
 
 # --- CACHÉS: <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 # --- L1 INSTRUCCIONES (L1I) ---
-IL1_SIZE_KB=32              # Tamaño en KB
+IL1_SIZE_KB=64            
 IL1_BSIZE=64                # Tamaño de bloque en bytes
-IL1_ASSOC=8                 # Vías (asociatividad)
+IL1_ASSOC=16              
 IL1_NSETS=$(( IL1_SIZE_KB * 1024 / (IL1_BSIZE * IL1_ASSOC) ))
 IL1="il1:${IL1_NSETS}:${IL1_BSIZE}:${IL1_ASSOC}:l"
-#   Mejora : il1:128:64:8:l (64 KB, 8 vías)
 #   nsets = tamaño_bytes / (bsize * assoc)
 
 # --- L1 DATOS (L1D) ---
-DL1_SIZE_KB=64              # subir a 64
+DL1_SIZE_KB=32
 DL1_BSIZE=64
 DL1_ASSOC=8
 DL1_NSETS=$(( DL1_SIZE_KB * 1024 / (DL1_BSIZE * DL1_ASSOC) ))
 DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
-#   Mejora : dl1:128:64:8:l (128 KB, 8 vías)
+
 
 # --- L2 UNIFICADA (UL2) ---
-UL2_SIZE_KB=4096            # 1 MB. Mejora: 2048 (2 MB) o 4096 (4 MB)
-UL2_BSIZE=128               # Cambio tamaño bloque
+UL2_SIZE_KB=4096          
+UL2_BSIZE=64
 UL2_ASSOC=16
 UL2_NSETS=$(( UL2_SIZE_KB * 1024 / (UL2_BSIZE * UL2_ASSOC) ))
 UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
@@ -79,19 +78,17 @@ UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
 
 
 # --- MEMORIA PRINCIPAL (DDR5-5600) ---
-MEM_LAT_FC=149  # -mem:lat <first_chunk>: ciclos hasta el primer bloque
-                #   Mejora : 100 (DDR5 más rápida, escenario optimista)
-MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional
-BUS_WIDTH=32    # cambio a 32
+MEM_LAT_FC=142
+MEM_LAT_IC=1    
+BUS_WIDTH=16
 
 # --- RECURSOS FUNCIONALES ---
-IALU=6          # -res:ialu   : ALUs enteras. Zen 5: 6.
-                #   Mejora : IALU=8 (sin evidencia de mejora)
-IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
-FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
-FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
-                #   Mejora : FPMULT=4
-MEMPORT=6       # cambio a 6
+IALU=6  
+IMULT=3         
+FPALU=4         
+FPMULT=4       
+
+MEMPORT=3
 
 # --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
 FASTFWD=100000000   # -fastfwd : 100 M instrucciones de calentamiento
@@ -115,6 +112,11 @@ prepare_specwork() {
     # Inputs
     if [ -d "/lib/specs2000/$b/data/ref" ]; then
         cp -n /lib/specs2000/$b/data/ref/* "$SPECWORK_DIR/$b/" 2>/dev/null
+    fi
+    # FIX GAP
+    if [ "$b" = "gap" ] && [ -d "/lib/specs2000/gap/data/all" ]; then
+        mkdir -p "$SPECWORK_DIR/gap/all"
+        cp -n /lib/specs2000/gap/data/all/* "$SPECWORK_DIR/gap/all/" 2>/dev/null
     fi
 }
 
@@ -171,7 +173,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
         ammp)  sim-outorder $ARGS -redir:sim "$SIM_TXT" \
                   ./ammp.exe < ammp.in >> "$LOG" 2>&1 ;;
         gap)   sim-outorder $ARGS -redir:sim "$SIM_TXT" \
-                  ./gap.exe -l ./ -q -m 192M < ref.in >> "$LOG" 2>&1 ;;
+                  ./gap.exe -l ./all -q -m 192M < ref.in >> "$LOG" 2>&1 ;;
         swim)  sim-outorder $ARGS -redir:sim "$SIM_TXT" \
                   ./swim.exe < swim.in >> "$LOG" 2>&1 ;;
         vpr)   sim-outorder $ARGS -redir:sim "$SIM_TXT" \

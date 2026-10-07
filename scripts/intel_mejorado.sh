@@ -4,21 +4,14 @@
 # MODELADO: INTEL CORE ULTRA X9 378H (Panther Lake - Cougar Cove + Darkmont)
 # SIMULADOR: SimpleScalar / Alpha (sim-outorder)
 # ------------------------------------------------------------------------------
-# VARIANTE BASE (valores por defecto del procesador real, ajustados a potencias
-# de 2 según exige SimpleScalar).
-#
-# USO:  ./amd_zen5.sh
+# VARIANTE BASE 
 #
 # Genera en results/AMD_Zen5/run_<timestamp>/:
 #   - <bench>.log            (stdout+stderr+stats+resumen de cada benchmark)
 #   - <bench>.csv            (una fila con las métricas clave)
 #   - _resumen.csv           (una fila por benchmark)
 #   - grafica_ipc.png        (gráfica de barras)
-#
-# Para hacer variantes "mejoradas" (L2 2MB, RUU 1024, etc.), copia este script,
-# cambia SOLO el bloque "VARIANTE" y el parámetro correspondiente. El resto se
-# autogestiona.
-# ==============================================================================
+#==============================================================================
 
 # ==============================================================================
 # 0. RUTAS PORTABLES
@@ -43,20 +36,18 @@ mkdir -p "$RESULTS_DIR"
 # ==============================================================================
 
 # --- FRONT-END: ancho de etapas del pipeline (k-vía del procesador) ---
-FETCH_IFQ=16    # -fetch:ifqsize: instrucciones en la cola de fetch. Zen 5: 8-wide.
-                #   Mejora sugerida: FETCH_IFQ=32 (doble cola, sin evidencia de mejora).
-DECODE_W=8      # -decode:width : instrucciones decodificadas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: DECODE_W=16 (sin evidencia de mejora en tests).
-ISSUE_W=8       # -issue:width  : instrucciones emitidas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: ISSUE_W=16 (sin evidencia de mejora en tests).
-COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
-                #   Mejora sugerida: COMMIT_W=16 (sin evidencia de mejora en tests).
+FETCH_IFQ=16    
+                
+DECODE_W=8     
+
+ISSUE_W=8       
+            
+COMMIT_W=8     
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
-RUU_SIZE=1024    # -ruu:size: Reorder Buffer. Zen 5 real 448 -> 512 (pot. de 2).
-                #   Mejora sugerida: RUU_SIZE=1024 (+doble ventana, bueno para swim).****
-LSQ_SIZE=256    # -lsq:size: Load/Store Queue. Zen 5 real 168 -> 256 (pot. de 2).
-                #   Mejora sugerida: LSQ_SIZE=512 (+doble cola, bueno para ammp).
+RUU_SIZE=1024    
+
+LSQ_SIZE=512   
 
 # --- CACHÉS: formato <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 # --- L1 INSTRUCCIONES (L1I) ---
@@ -65,7 +56,6 @@ IL1_BSIZE=64                # Tamaño de bloque en bytes
 IL1_ASSOC=16                 # Vías (asociatividad)
 IL1_NSETS=$(( IL1_SIZE_KB * 1024 / (IL1_BSIZE * IL1_ASSOC) ))
 IL1="il1:${IL1_NSETS}:${IL1_BSIZE}:${IL1_ASSOC}:l"
-#   Mejora : il1:128:64:8:l (64 KB, 8 vías)
 #   nsets = tamaño_bytes / (bsize * assoc)
 
 # --- L1 DATOS (L1D) ---
@@ -78,7 +68,7 @@ DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
 
 # --- L2 UNIFICADA (UL2) ---
 
-UL2_SIZE_KB=4096            # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 2048 sets
+UL2_SIZE_KB=4096            
 UL2_BSIZE=128
 UL2_ASSOC=16
 UL2_NSETS=$(( UL2_SIZE_KB * 1024 / (UL2_BSIZE * UL2_ASSOC) ))
@@ -86,14 +76,12 @@ UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
 #   Mejora: ul2:4096:64:16:l (4 MB)
 
 # --- MEMORIA PRINCIPAL (LPDDR5X-9600) ---
-MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
-                #   Mejora sugerida: 100 (DDR5 más rápida,  #optimista)
-MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional
-BUS_WIDTH=16    # -mem:width: ancho del bus en bytes (128 bits)
+MEM_LAT_FC=142  
+MEM_LAT_IC=1  
+BUS_WIDTH=16  
 
 # --- RECURSOS FUNCIONALES ---
 IALU=6          # -res:ialu   : ALUs enteras. Zen 5: 6.
-                #   Mejora sugerida: IALU=8 (sin evidencia de mejora)
 IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
 FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
@@ -123,6 +111,11 @@ prepare_specwork() {
     # Inputs
     if [ -d "/lib/specs2000/$b/data/ref" ]; then
         cp -n /lib/specs2000/$b/data/ref/* "$SPECWORK_DIR/$b/" 2>/dev/null
+    fi
+    # FIX GAP
+    if [ "$b" = "gap" ] && [ -d "/lib/specs2000/gap/data/all" ]; then
+        mkdir -p "$SPECWORK_DIR/gap/all"
+        cp -n /lib/specs2000/gap/data/all/* "$SPECWORK_DIR/gap/all/" 2>/dev/null
     fi
 }
 
@@ -179,7 +172,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
         ammp)  sim-outorder $ARGS -redir:sim "$SIM_TXT" \
                   ./ammp.exe < ammp.in >> "$LOG" 2>&1 ;;
         gap)   sim-outorder $ARGS -redir:sim "$SIM_TXT" \
-                  ./gap.exe -l ./ -q -m 192M < ref.in >> "$LOG" 2>&1 ;;
+                  ./gap.exe -l ./all -q -m 192M < ref.in >> "$LOG" 2>&1 ;;
         swim)  sim-outorder $ARGS -redir:sim "$SIM_TXT" \
                   ./swim.exe < swim.in >> "$LOG" 2>&1 ;;
         vpr)   sim-outorder $ARGS -redir:sim "$SIM_TXT" \
