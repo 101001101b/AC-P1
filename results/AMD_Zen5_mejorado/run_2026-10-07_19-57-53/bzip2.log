@@ -1,0 +1,25 @@
+==================================================================
+ BENCHMARK: bzip2
+ VARIANTE : AMD_Zen5_mejorado
+ FECHA    : dimecres, 7 d’octubre de 2026, 19:57:53 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/bzip2
+==================================================================
+
+--- RESUMEN ---
+sim_num_insn              100000000 # total number of instructions committed
+sim_cycle                  29828322 # total simulation time in cycles
+sim_IPC                      3.3525 # instructions per cycle
+sim_CPI                      0.2983 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy                9.9512 # avg IFQ occupancy (insn's)
+ruu_occupancy              618.8530 # avg RUU occupancy (insn's)
+lsq_occupancy              220.1474 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.9934 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses              104408907 # total number of accesses
+il1.miss_rate                0.0000 # miss rate (i.e., misses/ref)
+dl1.accesses               26126337 # total number of accesses
+dl1.miss_rate                0.0074 # miss rate (i.e., misses/ref)
+ul2.accesses                 364524 # total number of accesses
+ul2.miss_rate                0.1717 # miss rate (i.e., misses/ref)

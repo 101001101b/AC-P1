@@ -1,0 +1,2 @@
+benchmark,IPC,CPI,sim_cycle,sim_num_insn,sim_total_insn,sim_exec_BW,avg_sim_slip,ifq_occupancy,ifq_full,ruu_occupancy,ruu_full,ruu_latency,lsq_occupancy,lsq_full,lsq_latency,bpred_dir_rate,ras_rate,il1_miss_rate,dl1_miss_rate,ul2_miss_rate,itlb_miss_rate,dtlb_miss_rate,sim_IPB,bpred_addr_rate,bpred_misses,il1_misses,dl1_misses,ul2_misses
+bzip2,3.3525,0.2983,29828322,100000000,103828189,3.4809,250.4581,9.9512,0.4156,618.8530,0.0019,177.7874,220.1474,0.4486,63.2451,0.9934,1.0000,0.0000,0.0074,0.1717,0.0000,0.0019,7.1058,0.9934,92859,58,192653,62597
