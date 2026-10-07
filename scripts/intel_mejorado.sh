@@ -2,17 +2,17 @@
 # ==============================================================================
 # PRÁCTICA 1: ARQUITECTURA DE COMPUTADORES 
 # MODELADO: INTEL CORE ULTRA X9 378H (Panther Lake - Cougar Cove + Darkmont)
-# SIMULADOR: SimpleScalar / Alpha (sim-outorder)
+# SIMULADOR: SimpleScalar 
+# ALUMNOS: Raquel Cornadó y Lucas Sierra
 # ------------------------------------------------------------------------------
-# VARIANTE BASE 
+# VERSIÓN MEJORADA
 #
-# Genera en results/AMD_Zen5/run_<timestamp>/:
+# Genera en results/Intel_mejorado/run_<timestamp>/:
 #   - <bench>.log            (stdout+stderr+stats+resumen de cada benchmark)
-#   - <bench>.csv            (una fila con las métricas clave)
+#   - <bench>.csv            (una fila con las métricas)
 #   - _resumen.csv           (una fila por benchmark)
 #   - grafica_ipc.png        (gráfica de barras)
 #==============================================================================
-
 # ==============================================================================
 # 0. RUTAS PORTABLES
 # ==============================================================================
@@ -47,7 +47,7 @@ COMMIT_W=8
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
 RUU_SIZE=1024    
 
-LSQ_SIZE=512   
+LSQ_SIZE=256   
 
 # --- CACHÉS: formato <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 # --- L1 INSTRUCCIONES (L1I) ---
@@ -59,17 +59,17 @@ IL1="il1:${IL1_NSETS}:${IL1_BSIZE}:${IL1_ASSOC}:l"
 #   nsets = tamaño_bytes / (bsize * assoc)
 
 # --- L1 DATOS (L1D) ---
-DL1_SIZE_KB=64              # 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
+DL1_SIZE_KB=32              # 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
 DL1_BSIZE=64
 DL1_ASSOC=8
 DL1_NSETS=$(( DL1_SIZE_KB * 1024 / (DL1_BSIZE * DL1_ASSOC) ))
 DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
-#   Mejora: dl1:128:64:8:l (128 KB, 8 vías)
+
 
 # --- L2 UNIFICADA (UL2) ---
 
 UL2_SIZE_KB=4096            
-UL2_BSIZE=128
+UL2_BSIZE=64
 UL2_ASSOC=16
 UL2_NSETS=$(( UL2_SIZE_KB * 1024 / (UL2_BSIZE * UL2_ASSOC) ))
 UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
@@ -85,11 +85,9 @@ IALU=6          # -res:ialu   : ALUs enteras. Zen 5: 6.
 IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
 FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
-                #   Mejora sugerida: FPMULT=4 (útil si swim fuera FP-bound)
-MEMPORT=4                    # -res:memport: Intel Cougar Cove: 3 puertos de load
-                             #   Mejora: MEMPORT=4 
+MEMPORT=4
 
-# --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
+
 FASTFWD=100000000   # -fastfwd : 100 M instrucciones de calentamiento
 MAX_INST=100000000  # -max:inst: 100 M instrucciones simuladas en detalle
 
@@ -189,7 +187,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
         continue
     fi
 
-    # Resumen rico al log
+    # Resumen al log
     {
         echo ""
         echo "--- RESUMEN ---"
@@ -205,7 +203,6 @@ for BENCH in "${BENCHMARKS[@]}"; do
     echo "  [OK] $BENCH"
 
     # --- Extraer métricas (28) y escribir CSV individual ---
-    # Patrones con ^ para no confundir sim_num_insn con sim_total_insn, etc.
     IPC=$(grep -m1 '^sim_IPC ' "$SIM_TXT" | awk '{print $2}')
     CPI=$(grep -m1 '^sim_CPI ' "$SIM_TXT" | awk '{print $2}')
     CYC=$(grep -m1 '^sim_cycle ' "$SIM_TXT" | awk '{print $2}')

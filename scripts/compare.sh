@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================================
-# compare.sh - Genera comparativa de TODAS las variantes (28 métricas)
+# compare.sh - Genera comparativa de TODAS las variantes 
 # ==============================================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -132,70 +132,9 @@ MD="$OUT_DIR/_comparativa.md"
 echo "[OK] $MD"
 
 # ==============================================================================
-# 4. Gráficas gnuplot
-# ==============================================================================
-if ! command -v gnuplot >/dev/null 2>&1; then
-    echo "[INFO] gnuplot no instalado"
-    exit 0
-fi
-
-plot_metric() {
-    local TITLE="$1"
-    local FILE="$2"
-    local OUT="$3"
-    local YLABEL="$4"
-    local NCOL
-    NCOL=$(head -1 "$FILE" | awk -F, '{print NF}')
-    gnuplot -e "
-        set datafile separator ',';
-        set terminal pngcairo size 1400,600 font 'Arial,10';
-        set style data histograms;
-        set style histogram clustered gap 1;
-        set style fill solid 1.0 border -1;
-        set boxwidth 0.9;
-        set xtics rotate by -20;
-        set grid ytics;
-        set ylabel '$YLABEL';
-        set xlabel 'Benchmark';
-        set title '$TITLE';
-        set key outside right;
-        set output '$OUT';
-        plot for [i=2:$NCOL] '$FILE' using i:xtic(1) title columnhead(i)
-    " 2>/dev/null && echo "[OK] $OUT"
-}
-
-plot_metric "IPC"              "$OUT_DIR/_comparativa_IPC.csv"           "$OUT_DIR/grafica_IPC.png"           "IPC"
-plot_metric "CPI"              "$OUT_DIR/_comparativa_CPI.csv"           "$OUT_DIR/grafica_CPI.png"           "CPI"
-plot_metric "sim_cycle"        "$OUT_DIR/_comparativa_sim_cycle.csv"     "$OUT_DIR/grafica_sim_cycle.png"     "Cycles"
-plot_metric "sim_exec_BW"      "$OUT_DIR/_comparativa_sim_exec_BW.csv"   "$OUT_DIR/grafica_sim_exec_BW.png"   "Exec BW"
-plot_metric "avg_sim_slip"     "$OUT_DIR/_comparativa_avg_sim_slip.csv"  "$OUT_DIR/grafica_avg_sim_slip.png"  "Avg slip"
-plot_metric "IFQ occupancy"    "$OUT_DIR/_comparativa_ifq_occupancy.csv" "$OUT_DIR/grafica_ifq_occupancy.png" "IFQ occ"
-plot_metric "IFQ full"         "$OUT_DIR/_comparativa_ifq_full.csv"      "$OUT_DIR/grafica_ifq_full.png"      "IFQ full"
-plot_metric "RUU occupancy"    "$OUT_DIR/_comparativa_ruu_occupancy.csv" "$OUT_DIR/grafica_ruu_occupancy.png" "RUU occ"
-plot_metric "RUU full"         "$OUT_DIR/_comparativa_ruu_full.csv"      "$OUT_DIR/grafica_ruu_full.png"      "RUU full"
-plot_metric "RUU latency"      "$OUT_DIR/_comparativa_ruu_latency.csv"   "$OUT_DIR/grafica_ruu_latency.png"   "RUU latency"
-plot_metric "LSQ occupancy"    "$OUT_DIR/_comparativa_lsq_occupancy.csv" "$OUT_DIR/grafica_lsq_occupancy.png" "LSQ occ"
-plot_metric "LSQ full"         "$OUT_DIR/_comparativa_lsq_full.csv"      "$OUT_DIR/grafica_lsq_full.png"      "LSQ full"
-plot_metric "LSQ latency"      "$OUT_DIR/_comparativa_lsq_latency.csv"   "$OUT_DIR/grafica_lsq_latency.png"   "LSQ latency"
-plot_metric "Branch dir rate"  "$OUT_DIR/_comparativa_bpred_dir_rate.csv" "$OUT_DIR/grafica_bpred_dir_rate.png" "Branch dir"
-plot_metric "RAS rate"         "$OUT_DIR/_comparativa_ras_rate.csv"      "$OUT_DIR/grafica_ras_rate.png"      "RAS rate"
-plot_metric "L1I miss rate"    "$OUT_DIR/_comparativa_il1_miss_rate.csv" "$OUT_DIR/grafica_il1_miss.png"      "L1I miss"
-plot_metric "L1D miss rate"    "$OUT_DIR/_comparativa_dl1_miss_rate.csv" "$OUT_DIR/grafica_dl1_miss.png"      "L1D miss"
-plot_metric "L2 miss rate"     "$OUT_DIR/_comparativa_ul2_miss_rate.csv" "$OUT_DIR/grafica_ul2_miss.png"      "L2 miss"
-plot_metric "iTLB miss rate"   "$OUT_DIR/_comparativa_itlb_miss_rate.csv" "$OUT_DIR/grafica_itlb_miss.png"    "iTLB miss"
-plot_metric "dTLB miss rate"   "$OUT_DIR/_comparativa_dtlb_miss_rate.csv" "$OUT_DIR/grafica_dtlb_miss.png"    "dTLB miss"
-plot_metric "sim_IPB"          "$OUT_DIR/_comparativa_sim_IPB.csv"       "$OUT_DIR/grafica_sim_IPB.png"       "IPB"
-plot_metric "Branch addr rate" "$OUT_DIR/_comparativa_bpred_addr_rate.csv" "$OUT_DIR/grafica_bpred_addr_rate.png" "Branch addr"
-plot_metric "Branch misses"    "$OUT_DIR/_comparativa_bpred_misses.csv"  "$OUT_DIR/grafica_bpred_misses.png"  "Branch misses"
-plot_metric "L1I misses"       "$OUT_DIR/_comparativa_il1_misses.csv"    "$OUT_DIR/grafica_il1_misses.png"    "L1I misses"
-plot_metric "L1D misses"       "$OUT_DIR/_comparativa_dl1_misses.csv"    "$OUT_DIR/grafica_dl1_misses.png"    "L1D misses"
-plot_metric "L2 misses"        "$OUT_DIR/_comparativa_ul2_misses.csv"    "$OUT_DIR/grafica_ul2_misses.png"    "L2 misses"
-
-# ==============================================================================
 # 5. Comparativa final base vs mejorado
 # ==============================================================================
 CSV_FINAL="$OUT_DIR/comparativa_final.csv"
-GRAF_FINAL="$OUT_DIR/grafica_comparativa_final.png"
 
 V_AMD_BASE="AMD_Zen5"
 V_AMD_MEJ="AMD_Zen5_mejorado"
@@ -223,26 +162,6 @@ get_ipc() {
 } > "$CSV_FINAL"
 echo "[OK] $CSV_FINAL"
 
-gnuplot -e "
-    set datafile separator ',';
-    set terminal pngcairo size 1200,600 font 'Arial,11';
-    set style data histograms;
-    set style histogram clustered gap 1;
-    set style fill solid 1.0 border -1;
-    set boxwidth 0.9;
-    set xtics rotate by 0;
-    set grid ytics;
-    set ylabel 'IPC';
-    set xlabel 'Benchmark';
-    set title 'AMD base vs AMD mejorado vs Intel base vs Intel mejorado';
-    set key outside right;
-    set yrange [0:*];
-    set output '$GRAF_FINAL';
-    plot '$CSV_FINAL' using 2:xtic(1) title 'AMD base', \
-         '' using 3:xtic(1) title 'AMD mejorado', \
-         '' using 4:xtic(1) title 'Intel base', \
-         '' using 5:xtic(1) title 'Intel mejorado'
-" 2>/dev/null && echo "[OK] $GRAF_FINAL"
 
 echo ""
 echo # Tabla resumen transpuesta (benchmarks en columnas)

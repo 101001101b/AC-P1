@@ -5,12 +5,11 @@
 # SIMULADOR: SimpleScalar
 # ALUMNOS: Raquel Cornadó y Lucas Sierra
 # ------------------------------------------------------------------------------.
+# VERSIÓN MEJORADA:
 #
-# VERSIÓN:  ./amd_zen5_mejorado.sh
-#
-# Genera en results/AMD_Zen5/run_<timestamp>/:
+# Genera en results/AMD_Zen5_mejorado/run_<timestamp>/:
 #   - <bench>.log            (stdout+stderr+stats+resumen de cada benchmark)
-#   - <bench>.csv            (una fila con las métricas clave)
+#   - <bench>.csv            (una fila con las métricas)
 #   - _resumen.csv           (una fila por benchmark)
 #
 # ==============================================================================
@@ -34,28 +33,28 @@ RESULTS_DIR="$RESULTS_ROOT/$VARIANTE/run_$TIMESTAMP"
 mkdir -p "$RESULTS_DIR"
 
 # ==============================================================================
-# 2. PARÁMETROS ARQUITECTÓNICOS (con comentarios de mejora al lado)
+# 2. PARÁMETROS ARQUITECTÓNICOS 
 # ==============================================================================
 
 # --- FRONT-END: ancho de etapas del pipeline (k-vía del procesador) ---
-FETCH_IFQ=16
+FETCH_IFQ=16    
+                
+DECODE_W=8     
 
-DECODE_W=8      # -decode:width : instrucciones decodificadas por ciclo. Zen 5: 8.
-                #   Mejora : DECODE_W=16
-ISSUE_W=8       # -issue:width  : instrucciones emitidas por ciclo. Zen 5: 8.
-                #   Mejora : ISSUE_W=16
-COMMIT_W=8      # -commit:width : instrucciones retiradas por ciclo. Zen 5: 8.
-                #   Mejora : COMMIT_W=16.
+ISSUE_W=8       
+            
+COMMIT_W=8     
+
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
 RUU_SIZE=1024    
-LSQ_SIZE=512    
+LSQ_SIZE=256    
 
 # --- CACHÉS: <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 # --- L1 INSTRUCCIONES (L1I) ---
-IL1_SIZE_KB=64            
+IL1_SIZE_KB=32            
 IL1_BSIZE=64                # Tamaño de bloque en bytes
-IL1_ASSOC=16              
+IL1_ASSOC=8              
 IL1_NSETS=$(( IL1_SIZE_KB * 1024 / (IL1_BSIZE * IL1_ASSOC) ))
 IL1="il1:${IL1_NSETS}:${IL1_BSIZE}:${IL1_ASSOC}:l"
 #   nsets = tamaño_bytes / (bsize * assoc)
@@ -69,7 +68,7 @@ DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
 
 
 # --- L2 UNIFICADA (UL2) ---
-UL2_SIZE_KB=4096          
+UL2_SIZE_KB=2048          
 UL2_BSIZE=64
 UL2_ASSOC=16
 UL2_NSETS=$(( UL2_SIZE_KB * 1024 / (UL2_BSIZE * UL2_ASSOC) ))
@@ -78,7 +77,7 @@ UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
 
 
 # --- MEMORIA PRINCIPAL (DDR5-5600) ---
-MEM_LAT_FC=142
+MEM_LAT_FC=149
 MEM_LAT_IC=1    
 BUS_WIDTH=16
 
@@ -86,11 +85,9 @@ BUS_WIDTH=16
 IALU=6  
 IMULT=3         
 FPALU=4         
-FPMULT=4       
+FPMULT=2      
+MEMPORT=2
 
-MEMPORT=3
-
-# --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
 FASTFWD=100000000   # -fastfwd : 100 M instrucciones de calentamiento
 MAX_INST=100000000  # -max:inst: 100 M instrucciones simuladas en detalle
 
@@ -190,7 +187,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
         continue
     fi
 
-    # Resumen rico al log
+    # Resumen al log
     {
         echo ""
         echo "--- RESUMEN ---"
@@ -206,7 +203,6 @@ for BENCH in "${BENCHMARKS[@]}"; do
     echo "  [OK] $BENCH"
 
     # --- Extraer métricas (28) y escribir CSV individual ---
-    # Patrones con ^ para no confundir sim_num_insn con sim_total_insn, etc.
     IPC=$(grep -m1 '^sim_IPC ' "$SIM_TXT" | awk '{print $2}')
     CPI=$(grep -m1 '^sim_CPI ' "$SIM_TXT" | awk '{print $2}')
     CYC=$(grep -m1 '^sim_cycle ' "$SIM_TXT" | awk '{print $2}')
