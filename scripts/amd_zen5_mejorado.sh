@@ -97,7 +97,7 @@ IALU=6          # -res:ialu   : ALUs enteras. Zen 5: 6.
 IMULT=3         # -res:imult  : multiplicadores/divisores enteros. Zen 5: 3.
 FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
-                #   Mejora : FPMULT=4 (útil si swim fuera FP-bound)
+                #   Mejora : FPMULT=4 
 MEMPORT=4       # -res:memport: puertos de acceso a L1D. Zen 5: 4.
 
 # --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
@@ -190,7 +190,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
 
     # Comprobar stats
     if ! grep -q 'sim_IPC' "$SIM_TXT" 2>/dev/null; then
-        echo "  [AVISO] $BENCH sin sim_IPC (¿fastfwd agotó el programa?)"
+        echo "  [AVISO] $BENCH sin sim_IPC "
         rm -f "$SIM_TXT"
         continue
     fi

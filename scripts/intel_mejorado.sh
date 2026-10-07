@@ -74,19 +74,20 @@ DL1_BSIZE=64
 DL1_ASSOC=8
 DL1_NSETS=$(( DL1_SIZE_KB * 1024 / (DL1_BSIZE * DL1_ASSOC) ))
 DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
+#   Mejora: dl1:128:64:8:l (128 KB, 8 vías)
 
 # --- L2 UNIFICADA (UL2) ---
-#   Mejora: dl1:128:64:8:l (128 KB, 8 vías)
+
 UL2_SIZE_KB=4096            # L2 unificada: 2.5 MB reales -> 2 MB, 16 vías -> 2048 sets
-UL2_BSIZE=64
+UL2_BSIZE=128
 UL2_ASSOC=16
 UL2_NSETS=$(( UL2_SIZE_KB * 1024 / (UL2_BSIZE * UL2_ASSOC) ))
 UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
 #   Mejora: ul2:4096:64:16:l (4 MB)
 
-# --- MEMORIA PRINCIPAL (DDR5-5600) ---
+# --- MEMORIA PRINCIPAL (LPDDR5X-9600) ---
 MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
-                #   Mejora sugerida: 100 (DDR5 más rápida, escenario optimista)
+                #   Mejora sugerida: 100 (DDR5 más rápida,  #optimista)
 MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional
 BUS_WIDTH=16    # -mem:width: ancho del bus en bytes (128 bits)
 
@@ -98,7 +99,7 @@ FPALU=4         # -res:fpalu  : ALUs de coma flotante. Zen 5: 4.
 FPMULT=2        # -res:fpmult : multiplicadores/divisores FP. Zen 5: 2.
                 #   Mejora sugerida: FPMULT=4 (útil si swim fuera FP-bound)
 MEMPORT=4                    # -res:memport: Intel Cougar Cove: 3 puertos de load
-                             #   Mejora: MEMPORT=4 (paridad con AMD)
+                             #   Mejora: MEMPORT=4 
 
 # --- SIMULACIÓN (NO TOCAR: valores exigidos por el enunciado) ---
 FASTFWD=100000000   # -fastfwd : 100 M instrucciones de calentamiento
@@ -190,7 +191,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
 
     # Comprobar stats
     if ! grep -q 'sim_IPC' "$SIM_TXT" 2>/dev/null; then
-        echo "  [AVISO] $BENCH sin sim_IPC (¿fastfwd agotó el programa?)"
+        echo "  [AVISO] $BENCH sin sim_IPC"
         rm -f "$SIM_TXT"
         continue
     fi

@@ -71,7 +71,7 @@ IL1="il1:${IL1_NSETS}:${IL1_BSIZE}:${IL1_ASSOC}:l"
 # --- L1 DATOS (L1D) ---
 DL1_SIZE_KB=32              # 48 KB reales, 12 vías -> adaptado a 32 KB / 8 vías
 DL1_BSIZE=64
-DL1_ASSOC=12
+DL1_ASSOC=8
 DL1_NSETS=$(( DL1_SIZE_KB * 1024 / (DL1_BSIZE * DL1_ASSOC) ))
 DL1="dl1:${DL1_NSETS}:${DL1_BSIZE}:${DL1_ASSOC}:l"
 #   Mejora : dl1:128:64:8:l (128 KB, 8 vías)
@@ -86,7 +86,7 @@ UL2="ul2:${UL2_NSETS}:${UL2_BSIZE}:${UL2_ASSOC}:l"
                              
 # --- MEMORIA PRINCIPAL (LPDDR5X-9600) ---
 MEM_LAT_FC=142  # Estimado 142 para LPDDR5X-9600
-                #   Mejora : 100 (DDR5 más rápida, escenario optimista)
+                #   Mejora : 100 (DDR5 más rápida, #optimista)
 MEM_LAT_IC=1    # -mem:lat <inter_chunk>: ciclos por bloque adicional
 BUS_WIDTH=16    # -mem:width: ancho del bus en bytes (128 bits)
 
@@ -189,7 +189,7 @@ for BENCH in "${BENCHMARKS[@]}"; do
 
     # Comprobar stats
     if ! grep -q 'sim_IPC' "$SIM_TXT" 2>/dev/null; then
-        echo "  [AVISO] $BENCH sin sim_IPC (¿fastfwd agotó el programa?)"
+        echo "  [AVISO] $BENCH sin sim_IPC "
         rm -f "$SIM_TXT"
         continue
     fi

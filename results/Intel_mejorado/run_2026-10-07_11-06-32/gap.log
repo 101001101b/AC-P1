@@ -1,0 +1,25 @@
+==================================================================
+ BENCHMARK: gap
+ VARIANTE : Intel_mejorado
+ FECHA    : dimecres, 7 d’octubre de 2026, 11:10:00 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/gap
+==================================================================
+
+--- RESUMEN ---
+sim_num_insn               21808811 # total number of instructions committed
+sim_cycle                   5486105 # total simulation time in cycles
+sim_IPC                      3.9753 # instructions per cycle
+sim_CPI                      0.2516 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy               14.6096 # avg IFQ occupancy (insn's)
+ruu_occupancy              451.4051 # avg RUU occupancy (insn's)
+lsq_occupancy              253.2888 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.9993 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses               21892706 # total number of accesses
+il1.miss_rate                0.0000 # miss rate (i.e., misses/ref)
+dl1.accesses               10878704 # total number of accesses
+dl1.miss_rate                0.0469 # miss rate (i.e., misses/ref)
+ul2.accesses                1019323 # total number of accesses
+ul2.miss_rate                0.2502 # miss rate (i.e., misses/ref)

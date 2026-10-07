@@ -1,6 +1,6 @@
 benchmark,AMD_Zen5,AMD_Zen5_mejorado,Intel_CougarCove,Intel_mejorado
-bzip2,58,58,58,58
-ammp,247,247,247,247
-gap,5166,542,1481,542
-swim,28,28,28,28
-vpr,481,481,473,473
+bzip2,58,58,0,58
+ammp,247,247,0,247
+gap,5166,542,0,542
+swim,28,28,0,28
+vpr,481,481,0,473

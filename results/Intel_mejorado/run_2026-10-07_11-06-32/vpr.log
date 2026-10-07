@@ -1,0 +1,25 @@
+==================================================================
+ BENCHMARK: vpr
+ VARIANTE : Intel_mejorado
+ FECHA    : dimecres, 7 d’octubre de 2026, 11:11:58 CEST
+ WORKDIR  : /home/milax/Documents/AC-P1/specwork/vpr
+==================================================================
+
+--- RESUMEN ---
+sim_num_insn              100000001 # total number of instructions committed
+sim_cycle                  47976797 # total simulation time in cycles
+sim_IPC                      2.0843 # instructions per cycle
+sim_CPI                      0.4798 # cycles per instruction
+--- BUFFERS ---
+ifq_occupancy                4.6863 # avg IFQ occupancy (insn's)
+ruu_occupancy               44.9076 # avg RUU occupancy (insn's)
+lsq_occupancy               10.0794 # avg LSQ occupancy (insn's)
+--- BRANCH ---
+bpred_bimod.bpred_dir_rate    0.8603 # branch direction-prediction rate (i.e., all-hits/updates)
+--- CACHÉS ---
+il1.accesses              223205353 # total number of accesses
+il1.miss_rate                0.0000 # miss rate (i.e., misses/ref)
+dl1.accesses               28736784 # total number of accesses
+dl1.miss_rate                0.0060 # miss rate (i.e., misses/ref)
+ul2.accesses                 238344 # total number of accesses
+ul2.miss_rate                0.0971 # miss rate (i.e., misses/ref)
