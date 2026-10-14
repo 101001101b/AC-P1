@@ -167,7 +167,7 @@ echo ""
 echo # Tabla resumen transpuesta (benchmarks en columnas)
 echo ""
 echo "=================================================================="
-echo " RESUMEN IPC (transpuesto: métricas en filas, benchmarks en columnas)"
+echo " RESUMEN IPC (métricas en filas, benchmarks en columnas)"
 echo "=================================================================="
 printf "%-20s" "Métrica"
 for B in "${BENCHMARKS[@]}"; do printf " %12s" "$B"; done

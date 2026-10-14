@@ -18,19 +18,8 @@
               "icon": "lucide-file-text",
               "title": "IndicacionsDocumentacio (1)"
             }
-          },
-          {
-            "id": "f787b0bd304e41d0",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "Nueva pestaña"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -197,8 +186,10 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "08c4bd8bcaab27c2",
+  "active": "9af13ac981710c15",
   "lastOpenFiles": [
+    "Sin título.base",
+    "Sin título 1.base",
     "results/_comparativa/grafica_ifq_full.png",
     "results/_comparativa/grafica_dtlb_miss.png",
     "results/_comparativa/grafica_dl1_misses.png",
@@ -217,9 +208,7 @@
     "results/Intel_mejorado/run_2026-10-06_21-40-58/swim.log",
     "results/Intel_mejorado/run_2026-10-06_21-40-58/swim.csv",
     "results/Intel_mejorado/run_2026-10-06_21-40-58/gap.log",
-    "results/Intel_mejorado/run_2026-10-06_21-40-58/gap.csv",
     "results/_comparativa/grafica_ul2_misses.png",
-    "results/_comparativa/grafica_ul2_miss.png",
     "results/_comparativa/_comparativa.md",
     "recursos/lucas/results amd.md",
     "README.md",

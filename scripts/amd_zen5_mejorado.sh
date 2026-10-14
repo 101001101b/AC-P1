@@ -48,7 +48,7 @@ COMMIT_W=8
 
 # --- BUFFERS: ventana de instrucciones y cola de memoria ---
 RUU_SIZE=1024    
-LSQ_SIZE=256    
+LSQ_SIZE=512 #--- MEJORA APLICADA    
 
 # --- CACHÉS: <nombre>:<nsets>:<bsize>:<assoc>:<repl> ---
 # --- L1 INSTRUCCIONES (L1I) ---
@@ -60,7 +60,7 @@ IL1="il1:${IL1_NSETS}:${IL1_BSIZE}:${IL1_ASSOC}:l"
 #   nsets = tamaño_bytes / (bsize * assoc)
 
 # --- L1 DATOS (L1D) ---
-DL1_SIZE_KB=32
+DL1_SIZE_KB=64
 DL1_BSIZE=64
 DL1_ASSOC=8
 DL1_NSETS=$(( DL1_SIZE_KB * 1024 / (DL1_BSIZE * DL1_ASSOC) ))
